@@ -75,12 +75,13 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'verklegt_namskeid_db',
         'USER': 'verklegt_db_user',
-        'PASSWORD': 'jWFKPlvk735UhsnoDyjgBBqc',
+        'PASSWORD': 'tesT1234',
         'HOST': 'db-verklegt-namskeid-ii-eu-j73tcq.postgres.database.azure.com',
         'PORT': '5432'
     }
 }
 
+#jWFKPlvk735UhsnoDyjgBBqc
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
