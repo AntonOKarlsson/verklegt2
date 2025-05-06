@@ -77,24 +77,24 @@ WSGI_APPLICATION = 'castle_apartments.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-# PostgreSQL
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'verklegt_namskeid_db',
-#         'USER': 'verklegt_db_user',
-#         'PASSWORD': 'tesT1234',
-#         'HOST': 'db-verklegt-namskeid-ii-eu-j73tcq.postgres.database.azure.com',
-#         'PORT': '5432'
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+# PostgreSQL
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'verklegt_namskeid_db',
+        'USER': 'verklegt_db_user',
+        'PASSWORD': 'tesT1234',
+        'HOST': 'db-verklegt-namskeid-ii-eu-j73tcq.postgres.database.azure.com',
+        'PORT': '5432'
+    }
+}
 
 
 
