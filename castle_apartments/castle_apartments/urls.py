@@ -20,12 +20,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib import admin
 from django.urls import path, include
-from .views import test_view
-from .views import home
+from .views import test_view, home, property_view
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', test_view, name='test'),
+    path('properties', property_view, name='properties'),
     path('', home, name='home'),
 ]
