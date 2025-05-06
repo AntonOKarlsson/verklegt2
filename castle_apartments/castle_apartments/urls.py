@@ -20,9 +20,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib import admin
 from django.urls import path, include
+from .views import test_view
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-   path( '', include('property.urls')),
+    path( '', include('property.urls')),
+    path('test/', test_view, name='test'),
 ]
