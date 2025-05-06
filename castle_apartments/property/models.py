@@ -1,24 +1,20 @@
+# models.py
+
 from django.db import models
 
-class User(models.Model):
-    username = models.CharField(max_length=50, unique=True)
-    password_hash = models.TextField()
-    email = models.EmailField(max_length=100, unique=True)
-    full_name = models.CharField(max_length=100, blank=True)
-    profile_image_url = models.TextField(blank=True)
-    is_seller = models.BooleanField(default=False)
+class Property(models.Model):
+    seller = models.ForeignKey('Seller', on_delete=models.CASCADE, related_name='properties')
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    price = models.DecimalField(max_digits=12, decimal_places=2)
+    address = models.TextField()
+    postal_code = models.CharField(max_length=10, blank=True)
+    property_type = models.CharField(max_length=50, blank=True)
+    num_rooms = models.IntegerField(null=True, blank=True)
+    size_sqm = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    built_year = models.IntegerField(null=True, blank=True)
+    is_sold = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.username
-
-class Seller(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    type = models.CharField(max_length=50, blank=True)
-    logo_url = models.TextField(blank=True)
-    cover_image_url = models.TextField(blank=True)
-    bio = models.TextField(blank=True)
-    agency_address = models.TextField(blank=True)
-
-    def __str__(self):
-        return f"Seller: {self.user.username}"
+        return self.title
