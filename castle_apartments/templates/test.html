@@ -5,12 +5,21 @@
     <h1>This is a test!</h1>
 
     <h1>Properties</h1>
-
+    <table>
+        <tr>
+            <th style = "width:20%;text-align:left;">Title</th>
+            <th style = "width:20%;text-align:left;">Price</th>
+            <th style = "width:20%;text-align:left;">Address</th>
+        </tr>
     {% for p in properties %}
-      <p>{{ p.title }} - {{ p.price }} kr - {{ p.address }}</p>
+        <tr>
+            <td style = "width:20%;">{{ p.title }}</td>
+            <td style = "width:20%;">{{ p.price }} kr</td>
+            <td style = "width:20%;">{{ p.address }}</td>
+        </tr>
     {% empty %}
       <p>No properties found.</p>
     {% endfor %}
-
+    </table>
 </body>
 </html>
