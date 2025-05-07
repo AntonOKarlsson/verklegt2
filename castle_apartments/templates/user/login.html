@@ -4,8 +4,13 @@
   {%  if messages %}
     {%  for message in messages %}
         {{ message }}
+        <p>Please try again.</p>
     {%  endfor %}
+  {% else %}
+  <p>Please enter your username and password to login.</p>
+
   {% endif %}
+
 
     <form class="login" method="post">
         {% csrf_token %}
