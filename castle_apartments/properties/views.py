@@ -16,3 +16,17 @@ def property_view(request):
 def get_property_by_id(request, id):
     property_obj = get_object_or_404(Property, id=id)
     return render(request, 'properties/property_detail.html', {'property': property_obj})
+
+def property_search(request):
+    query = request.GET.get("query", "")
+    results = []
+
+    if query:
+        results = Property.objects.filter(
+            title__icontains=query
+        )
+
+    return render(request, 'properties/property_search.html', {
+        'results': results,
+        'query': query
+    })
