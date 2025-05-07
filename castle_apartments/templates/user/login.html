@@ -1,5 +1,17 @@
-{% extends "base.html" %}
-{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Castle Apartments</title>
+</head>
+<body>
+  {%  if messages %}
+    {%  for message in messages %}
+        {{ message }}
+    {%  endfor %}
+  {% endif %}
+
     <form class="login" method="post">
         {% csrf_token %}
         <label for="name"> Name: </label> <br/>
@@ -11,4 +23,7 @@
     <div style = 'margin-left:70px;margin-top:-21px'>
         <button onclick="history.back()">Go back</button>
     </div>
-{% endblock %}
+
+</body>
+</html>
+
