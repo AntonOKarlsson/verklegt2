@@ -1,10 +1,5 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Castle Apartments</title>
-</head>
+{% extends 'base.html' %}
+{% block content %}
 <body>
   {%  if messages %}
     {%  for message in messages %}
@@ -18,12 +13,13 @@
         <input type="text" id="name" name="username" /><br/><br/>
         <label for="password"> Password: </label> <br/>
         <input type="password" id="password" name="password" /><br/><br/>
-        <input type="submit" class="complete_btn" style = 'margin-right:25px' value="Login">
+        <input type="submit" class="complete_btn" value="Login">
+        <button type="button" onclick="history.back()">Go back</button>
     </form>
-    <div style = 'margin-left:70px;margin-top:-21px'>
-        <button onclick="history.back()">Go back</button>
-    </div>
 
 </body>
-</html>
+{% endblock content %}
+
+
+
 
