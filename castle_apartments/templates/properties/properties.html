@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head><title>Castle Aparments</title></head>
+<body>
+    <h1>Castle my apartment</h1>
+
+    <h1>Properties</h1>
+    <table>
+        <tr>
+            <th style = "width:20%;text-align:left;">Title</th>
+            <th style = "width:20%;text-align:left;">Price</th>
+            <th style = "width:20%;text-align:left;">Address</th>
+        </tr>
+    {% load humanize %}
+    {% for p in properties %}
+        <tr>
+            <td style="width:20%;">
+                <a href="{% url 'property-by-id' p.id %}">{{ p.title }}</a>
+            </td>
+            <td style = "width:20%;">{{ p.price | intcomma }} kr</td>
+            <td style = "width:20%;">{{ p.address }}</td>
+        </tr>
+    {% empty %}
+      <p>No properties found.</p>
+    {% endfor %}
+    </table>
+</body>
+</html>

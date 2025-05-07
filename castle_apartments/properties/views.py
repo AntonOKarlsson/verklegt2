@@ -11,8 +11,8 @@ def index(request):
 
 def property_view(request):
     properties = Property.objects.all()
-    return render(request, 'test.html', {'properties': properties})
+    return render(request, 'properties/properties.html', {'properties': properties})
 
 def get_property_by_id(request, id):
     property_obj = get_object_or_404(Property, id=id)
-    return render(request, 'property_detail.html', {'property': property_obj})
+    return render(request, 'properties/property_detail.html', {'property': property_obj})
