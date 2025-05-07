@@ -1,0 +1,15 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Property Search</title>
+</head>
+<body>
+    <input type="text" id="search-input" placeholder="Search by title">
+    <button id="search-icon">Search</button>
+
+    <ul id="result-list"></ul>
+
+    <script src="{% static 'js/property_filter.js' %}"></script>
+</body>
+</html>
