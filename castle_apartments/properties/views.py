@@ -1,7 +1,5 @@
-from django.shortcuts import render
-
-from models import Property
-
+from django.shortcuts import render, get_object_or_404
+from .models import Property
 from  properties.models import Property
 
 
@@ -11,3 +9,10 @@ def index(request):
         })
     #return HttpResponse('Response from property')
 
+def property_view(request):
+    properties = Property.objects.all()
+    return render(request, 'properties/properties.html', {'properties': properties})
+
+def get_property_by_id(request, id):
+    property_obj = get_object_or_404(Property, id=id)
+    return render(request, 'properties/property_detail.html', {'property': property_obj})
