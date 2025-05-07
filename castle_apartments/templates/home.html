@@ -1,1 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<body>
+<h1>Welcome to Castle apartments</h1>
+<p>We can help you with all your apartment and housing needs.</p>
+
+<div class="property-container">
+    <img src="{% static 'images/catalogue/prufa.jpg' %}" alt="A view of an apartment for sale" class="property-image">
+</div>
+</body>
+{% endblock content %}
