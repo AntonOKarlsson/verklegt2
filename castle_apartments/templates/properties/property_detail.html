@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+    <title>{{ property.title }}</title>
+</head>
+<body>
+    <h1>{{ property.title }}</h1>
+
+    <p><strong>Description:</strong> {{ property.description }}</p>
+    <p><strong>Price:</strong> {{ property.price }} kr</p>
+    <p><strong>Address:</strong> {{ property.address }}</p>
+    <p><strong>Postal Code:</strong> {{ property.postal_code }}</p>
+    <p><strong>Property Type:</strong> {{ property.property_type }}</p>
+    <p><strong>Number of Rooms:</strong> {{ property.num_rooms }}</p>
+    <p><strong>Size (sqm):</strong> {{ property.size_sqm }}</p>
+    <p><strong>Built Year:</strong> {{ property.built_year }}</p>
+    <p><strong>Sold:</strong> {% if property.is_sold %}Yes{% else %}No{% endif %}</p>
+    <p><strong>Created At:</strong> {{ property.created_at }}</p>
+
+    <hr>
+    <p><a href="{% url 'properties' %}">← Back to Properties</a></p>
+</body>
+
+{% endblock content %}

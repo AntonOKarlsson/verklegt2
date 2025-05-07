@@ -67,9 +67,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'castle_apartments.context_processor.footer_info',
             ],
         },
     },
+
 ]
 
 WSGI_APPLICATION = 'castle_apartments.wsgi.application'
