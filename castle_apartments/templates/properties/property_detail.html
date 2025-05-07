@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
+
+{% block content %}
 <head>
     <title>{{ property.title }}</title>
 </head>
@@ -20,4 +21,5 @@
     <hr>
     <p><a href="{% url 'properties' %}">← Back to Properties</a></p>
 </body>
-</html>
+
+{% endblock content %}
