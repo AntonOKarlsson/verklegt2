@@ -103,12 +103,16 @@ a.article-title:hover {
 .site-footer {
     background-color: #73605B;
     color: #F5F5F5 ;
-    padding: 20px 0;
+    padding-bottom: 20px;
     margin-top: 40px;
+    bottom: 0px;
+    position: fixed;
+    width: 100%;
 }
 
 .site-footer h4 {
-    color: #73605B;
+    /*var #73605B;*/
+    color: #F5F5F5;
     margin-bottom: 15px;
 }
 

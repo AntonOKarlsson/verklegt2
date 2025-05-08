@@ -45,7 +45,7 @@ def create_user(request):
             messages.success(request, ('You have successfully created your user.'))
             return redirect('home')
         else:
-            messages.success(request, 'Sign up failed.')
+            messages.error(request, 'User creation failed.')
             return redirect('create_user')
     else:
         return render(request, 'user/createuser.html',{'form':form})
