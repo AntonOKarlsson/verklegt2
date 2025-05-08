@@ -5,13 +5,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const minPrice = document.getElementById('min-price').value;
         const maxPrice = document.getElementById('max-price').value;
         const propertyType = document.getElementById('property-type').value;
+        const ordering = document.getElementById('order-by').value;
 
         const params = new URLSearchParams({
             property_search: query,
             postal_code: postalCode,
             min_price: minPrice,
             max_price: maxPrice,
-            property_type: propertyType
+            property_type: propertyType,
+            ordering: ordering
         });
 
         fetch(`/properties/api/search/?${params.toString()}`)

@@ -47,12 +47,6 @@ def json_search(request):
     max_price = request.GET.get('max_price')
     property_type = request.GET.get('property_type')
 
-    print("DEBUG: search_term =", search_term,
-          "| postal_code =", postal_code,
-          "| min_price =", min_price,
-          "| max_price =", max_price,
-          "| property_type =", property_type)
-
     results = Property.objects.all()
 
     if search_term:
@@ -69,6 +63,10 @@ def json_search(request):
 
     if property_type:
         results = results.filter(property_type__iexact=property_type)
+
+    ordering = request.GET.get('ordering')
+    if ordering in ['price', '-price', 'title', '-title']:
+        results = results.order_by(ordering)
 
     data = [
         {
