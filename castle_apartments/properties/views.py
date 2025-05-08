@@ -31,17 +31,27 @@ def property_search(request):
         'query': query
     })
 
-# HTML page that includes the JS search interface
 def property_search_page(request):
-    return render(request, 'properties/json_search.html')
+    postal_codes = Property.objects.values_list('postal_code', flat=True).distinct().order_by('postal_code')
+    property_types = Property.objects.values_list('property_type', flat=True).distinct().order_by('property_type')
+    return render(request, 'properties/json_search.html', {
+        'postal_codes': postal_codes,
+        'property_types': property_types
+    })
 
-# JSON API endpoint for filtered property data
+
 def json_search(request):
     search_term = request.GET.get('property_search', "")
     postal_code = request.GET.get('postal_code')
     min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
     property_type = request.GET.get('property_type')
+
+    print("DEBUG: search_term =", search_term,
+          "| postal_code =", postal_code,
+          "| min_price =", min_price,
+          "| max_price =", max_price,
+          "| property_type =", property_type)
 
     results = Property.objects.all()
 
@@ -52,10 +62,10 @@ def json_search(request):
         results = results.filter(postal_code__icontains=postal_code)
 
     if min_price:
-        results = results.filter(price__gte=min_price)
+        results = results.filter(price__gte=int(min_price))
 
     if max_price:
-        results = results.filter(price__lte=max_price)
+        results = results.filter(price__lte=int(max_price))
 
     if property_type:
         results = results.filter(property_type__iexact=property_type)

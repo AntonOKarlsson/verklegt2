@@ -7,33 +7,52 @@
 
     <label>
         Title or Address:
-        <input type="text" id="search-input" placeholder="Search by title or address">
+        <input type="text" id="search-input" placeholder="Search by address">
     </label><br>
 
-    <label>
-        Postal Code:
-        <input type="text" id="postal-code" placeholder="Postal code">
-    </label><br>
+<label>
+    Postal Code:
+    <select id="postal-code">
+        <option value="">Any</option>
+        {% for code in postal_codes %}
+            <option value="{{ code }}">{{ code }}</option>
+        {% endfor %}
+    </select>
+</label><br>
 
-    <label>
-        Min Price:
-        <input type="number" id="min-price" placeholder="Min price">
-    </label><br>
+<label>
+    Min Price:
+    <select id="min-price">
+        <option value="">Any</option>
+        <option value="50000000">50m</option>
+        <option value="75000000">75m</option>
+        <option value="100000000">100m</option>
+        <option value="150000000">150m</option>
+        <option value="200000000">200m</option>
+    </select>
+</label><br>
 
-    <label>
-        Max Price:
-        <input type="number" id="max-price" placeholder="Max price">
-    </label><br>
+<label>
+    Max Price:
+    <select id="max-price">
+        <option value="50000000">50m</option>
+        <option value="75000000">75m</option>
+        <option value="100000000">100m</option>
+        <option value="150000000">150m</option>
+        <option value="200000000">200m</option>
+        <option value="">Any</option>
+    </select>
+</label><br>
 
-    <label>
-        Property Type:
-        <select id="property-type">
-            <option value="">Any type</option>
-            <option value="apartment">Apartment</option>
-            <option value="villa">Villa</option>
-            <option value="house">House</option>
-        </select>
-    </label><br><br>
+ <label>
+    Property Type:
+    <select id="property-type">
+        <option value="">Any</option>
+        {% for type in property_types %}
+            <option value="{{ type }}">{{ type|capfirst }}</option>
+        {% endfor %}
+    </select>
+</label><br>
 
     <button id="search-icon">Search</button>
 
