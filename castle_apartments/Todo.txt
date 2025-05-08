@@ -1,5 +1,5 @@
 search property
 make/view/accept offers
 view property + photos
-creat user
+create user
 view/modify profile
