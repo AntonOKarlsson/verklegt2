@@ -5,9 +5,41 @@
     <title>Property Search</title>
 </head>
 <body>
-    <input type="text" id="search-input" placeholder="Search by title">
+    <h1>Search Properties</h1>
+
+    <label>
+        Title or Address:
+        <input type="text" id="search-input" placeholder="Search by title or address">
+    </label><br>
+
+    <label>
+        Postal Code:
+        <input type="text" id="postal-code" placeholder="Postal code">
+    </label><br>
+
+    <label>
+        Min Price:
+        <input type="number" id="min-price" placeholder="Min price">
+    </label><br>
+
+    <label>
+        Max Price:
+        <input type="number" id="max-price" placeholder="Max price">
+    </label><br>
+
+    <label>
+        Property Type:
+        <select id="property-type">
+            <option value="">Any type</option>
+            <option value="apartment">Apartment</option>
+            <option value="villa">Villa</option>
+            <option value="house">House</option>
+        </select>
+    </label><br><br>
+
     <button id="search-icon">Search</button>
 
+    <h2>Results:</h2>
     <ul id="result-list"></ul>
 
     <script src="{% static 'js/property_filter.js' %}"></script>

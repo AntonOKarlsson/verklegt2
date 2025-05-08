@@ -27,8 +27,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', test_view, name='test'),
     path('properties/', include('properties.urls')),
-    path('properties/search', include('properties.urls')),
-    path('properties', property_view, name='properties'),
     path('', home, name='home'),
 
     path('login/', user.views.login_user, name='login'),
