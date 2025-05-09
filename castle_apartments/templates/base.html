@@ -58,6 +58,7 @@
             <div class="navbar-nav ms-auto me-2">
                 {% if user.is_authenticated %}
                   <a class="nav-item nav-link" href='{% url 'logout' %}'>Logout ({{ user.get_full_name|default:user.username }})</a>
+                  <a class="nav-item nav-link" href='{% url 'updateuser' %}'>Profile</a>
                 {% else %}
                   <a class="nav-item nav-link" href='{% url 'login' %}'>Login</a>
                   <a class="nav-item nav-link" href='{% url 'createuser' %}'>Create user</a>
@@ -74,6 +75,22 @@
                 />
                 <label class="form-check-label theme-label ms-2" for="flexSwitchCheckChecked" id="themeLabel">Light</label>
             </div>
+                {% if user.is_authenticated %}
+                <!--profile image-->
+                    <div class="navbar-nav text-end">
+                        <ul>
+                            <li>
+                                {% if user.first_name %}
+                                    <img src="{% static 'images/homer.png' %}" alt="profile logo" class="rounded-circle" width=40px">
+                                {% else %}
+                                    <img src="{% static 'images/default_user.png' %}" alt="profile logo" class="rounded-circle" width=40px"->
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                {%  endif %}
+
+
           </div>
         </div>
       </nav>
