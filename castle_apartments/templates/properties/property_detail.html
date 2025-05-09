@@ -6,6 +6,15 @@
 </head>
 <body>
     <h1>{{ property.title }}</h1>
+    {% if property.header_image %}
+        <div class="property-image">
+            <img src="{{ property.header_image.url }}" alt="{{ property.title }}" style="max-width: 100%; height: auto;">
+        </div>
+    {% else %}
+        <div class="property-image">
+            <p>No image available</p>
+        </div>
+    {% endif %}
 
     <p><strong>Description:</strong> {{ property.description }}</p>
     <p><strong>Price:</strong> {{ property.price }} kr</p>

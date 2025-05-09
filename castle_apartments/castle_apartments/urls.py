@@ -35,5 +35,7 @@ urlpatterns = [
     path('updateuser/',user.views.update_user, name='updateuser'),
     path('updatepassword/',user.views.update_password, name='updatepassword'),
 
-
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

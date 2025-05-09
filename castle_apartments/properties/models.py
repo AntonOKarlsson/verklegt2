@@ -4,6 +4,7 @@ from django.db import models
 
 class Property(models.Model):
     seller = models.ForeignKey('user.Seller', on_delete=models.CASCADE, related_name='properties')
+    header_image = models.ImageField(upload_to='media/property_images/', blank=True, null=True)
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=12, decimal_places=2)
