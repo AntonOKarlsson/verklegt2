@@ -2,122 +2,113 @@
 {% load static %}
 
 {% block content %}
-<body>
-    <h1>Search Properties</h1>
+<div class="container mt-4">
 
-    <label>
-        Title or Address:
-        <input type="text" id="search-input" placeholder="Search by address">
-    </label><br>
+    <h1 class="mb-4">Search Properties</h1>
 
-<label>
-    Postal Code:
-    <select id="postal-code">
-        <option value="">Any</option>
-        {% for code in postal_codes %}
-            <option value="{{ code }}">{{ code }}</option>
-        {% endfor %}
-    </select>
-</label><br>
+<!-- Search Filters -->
+<div class="card p-3 mb-4 shadow-sm">
+    <form>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 g-2 align-items-end">
 
-<label>
-    Min Price:
-    <select id="min-price">
-        <option value="">Any</option>
-        <option value="50000000">50m</option>
-        <option value="75000000">75m</option>
-        <option value="100000000">100m</option>
-        <option value="150000000">150m</option>
-        <option value="200000000">200m</option>
-    </select>
-</label><br>
 
-<label>
-    Max Price:
-    <select id="max-price">
-        <option value="50000000">50m</option>
-        <option value="75000000">75m</option>
-        <option value="100000000">100m</option>
-        <option value="150000000">150m</option>
-        <option value="200000000">200m</option>
-        <option value="">Any</option>
-    </select>
-</label><br>
+            <div class="col">
+                <label for="search-input" class="form-label">Title or Address</label>
+                <input type="text" id="search-input" class="form-control" placeholder="Search by address">
+            </div>
 
- <label>
-    Property Type:
-    <select id="property-type">
-        <option value="">Any</option>
-        {% for type in property_types %}
-            <option value="{{ type }}">{{ type|capfirst }}</option>
-        {% endfor %}
-    </select>
-</label><br>
+            <div class="col">
+                <label for="postal-code" class="form-label">Postal Code</label>
+                <select id="postal-code" class="form-select">
+                    <option value="">Any</option>
+                    {% for code in postal_codes %}
+                        <option value="{{ code }}">{{ code }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-    <label>
-    Order by:
-    <select id="order-by">
-        <option value="">Default</option>
-        <option value="title">Name (A–Z)</option>
-        <option value="-title">Name (Z–A)</option>
-        <option value="price">Price (Low–High)</option>
-        <option value="-price">Price (High–Low)</option>
-    </select>
-</label><br>
+            <div class="col">
+                <label for="min-price" class="form-label">Min Price</label>
+                <select id="min-price" class="form-select">
+                    <option value="">Any</option>
+                    <option value="50000000">50m</option>
+                    <option value="75000000">75m</option>
+                    <option value="100000000">100m</option>
+                    <option value="150000000">150m</option>
+                    <option value="200000000">200m</option>
+                </select>
+            </div>
 
-    <button id="search-icon">Search</button>
+            <div class="col">
+                <label for="max-price" class="form-label">Max Price</label>
+                <select id="max-price" class="form-select">
+                    <option value="">Any</option>
+                    <option value="50000000">50m</option>
+                    <option value="75000000">75m</option>
+                    <option value="100000000">100m</option>
+                    <option value="150000000">150m</option>
+                    <option value="200000000">200m</option>
+                </select>
+            </div>
 
-    <h2>Results:</h2>
-    <ul id="result-list"></ul>
+            <div class="col">
+                <label for="min-size" class="form-label">Min Size</label>
+                <select id="min-size" class="form-select">
+                    <option value="">Any</option>
+                    <option value="50">50m²</option>
+                    <option value="100">100m²</option>
+                    <option value="150">150m²</option>
+                    <option value="200">200m²</option>
+                    <option value="300">300m²</option>
+                </select>
+            </div>
 
-    <script src="{% static 'js/property_filter.js' %}"></script>
-</body>
+            <div class="col">
+                <label for="max-size" class="form-label">Max Size</label>
+                <select id="max-size" class="form-select">
+                    <option value="">Any</option>
+                    <option value="50">50m²</option>
+                    <option value="100">100m²</option>
+                    <option value="150">150m²</option>
+                    <option value="200">200m²</option>
+                    <option value="300">300m²</option>
+                </select>
+            </div>
 
-{% endblock content %}
+            <div class="col">
+                <label for="property-type" class="form-label">Property Type</label>
+                <select id="property-type" class="form-select">
+                    <option value="">Any</option>
+                    {% for type in property_types %}
+                        <option value="{{ type }}">{{ type|capfirst }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-{#<!DOCTYPE html>#}
-{#<html>#}
-{#<head>#}
-{#    <title>Property Search</title>#}
-{#</head>#}
-{#<body>#}
-{#    <h1>Search Properties</h1>#}
-{##}
-{#    <label>#}
-{#        Title or Address:#}
-{#        <input type="text" id="search-input" placeholder="Search by title or address">#}
-{#    </label><br>#}
-{##}
-{#    <label>#}
-{#        Postal Code:#}
-{#        <input type="text" id="postal-code" placeholder="Postal code">#}
-{#    </label><br>#}
-{##}
-{#    <label>#}
-{#        Min Price:#}
-{#        <input type="number" id="min-price" placeholder="Min price">#}
-{#    </label><br>#}
-{##}
-{#    <label>#}
-{#        Max Price:#}
-{#        <input type="number" id="max-price" placeholder="Max price">#}
-{#    </label><br>#}
-{##}
-{#    <label>#}
-{#        Property Type:#}
-{#        <select id="property-type">#}
-{#            <option value="">Any type</option>#}
-{#            <option value="apartment">Apartment</option>#}
-{#            <option value="villa">Villa</option>#}
-{#            <option value="house">House</option>#}
-{#        </select>#}
-{#    </label><br><br>#}
-{##}
-{#    <button id="search-icon">Search</button>#}
-{##}
-{#    <h2>Results:</h2>#}
-{#    <ul id="result-list"></ul>#}
-{##}
-{#    <script src="{% static 'js/property_filter.js' %}"></script>#}
-{#</body>#}
-{#</html>#}
+            <div class="col">
+                <label for="order-by" class="form-label">Order by</label>
+                <select id="order-by" class="form-select">
+                    <option value="">Default</option>
+                    <option value="title">Name (A–Z)</option>
+                    <option value="-title">Name (Z–A)</option>
+                    <option value="price">Price (Low–High)</option>
+                    <option value="-price">Price (High–Low)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mt-2 text-end">
+            <button type="button" id="search-icon" class="btn btn-primary px-4">Search</button>
+        </div>
+    </form>
+</div>
+
+
+    <!-- Search Results -->
+
+    <div class="row" id="result-list"></div>
+
+</div>
+
+<script src="{% static 'js/property_filter.js' %}?v=2"></script>
+{% endblock %}

@@ -45,6 +45,8 @@ def json_search(request):
     postal_code = request.GET.get('postal_code')
     min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
+    min_size = request.GET.get('min_size')
+    max_size = request.GET.get('max_size')
     property_type = request.GET.get('property_type')
 
     results = Property.objects.all()
@@ -60,6 +62,12 @@ def json_search(request):
 
     if max_price:
         results = results.filter(price__lte=int(max_price))
+
+    if min_size:
+        results = results.filter(size_sqm__gte=int(min_size))
+
+    if max_size:
+        results = results.filter(size_sqm__lte=int(max_size))
 
     if property_type:
         results = results.filter(property_type__iexact=property_type)
