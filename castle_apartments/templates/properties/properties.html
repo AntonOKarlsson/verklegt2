@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load humanize %}
+{% load thumbnail %}
 
 {% block content %}
 
@@ -10,12 +11,12 @@
 <div class="row" id="propertyContainer">
     {% for p in properties %}
     <div class="col-12 col-sm-6 col-md-4 mb-4">
-        <div class="card h-100 bg-body text-body {% if p.is_sold %}sold{% endif %}">
-            {% if p.thumbnail %}
-                <img src="{{ p.thumbnail.url }}" class="card-img-top" alt="Thumbnail of {{ p.title }}">
-            {% else %}
-                <img src="{% static 'images/property_placeholder.png' %}" class="card-img-top" alt="No thumbnail">
-            {% endif %}
+    <div class="card h-100 bg-body text-body {% if p.is_sold %}sold{% endif %}">
+        {% if p.header_image %}
+            <img src="{% thumbnail p.header_image 300x300 crop %}" class="card-img-top" alt="Thumbnail of {{ p.title }}">
+        {% else %}
+            <img src="{% static 'images/property_placeholder.png' %}" class="card-img-top" alt="No thumbnail">
+        {% endif %}
 
             <div class="card-body">
                 <h5 class="card-title">
