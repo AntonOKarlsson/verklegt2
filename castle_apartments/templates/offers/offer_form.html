@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+    <h1>Your offer for {{ property.title }}</h1>
+
+    <form method="post" action="{% url 'offer-by-id' id=property.id %}">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="offer_price">Your offer (kr):</label>
+        <input type="number" id="offer_price" name="offer_price" step="0.01" min="0" required><br><br>
+    </div>
+
+    <input type="submit" value="Submit Offer">
+    </form>
+
+    <div class="property-summary">
+        <h3>Property Summary</h3>
+        <p><strong>Address:</strong> {{ property.address }}</p>
+        <p><strong>Asking Price:</strong> {{ property.price }} kr</p>
+        {% if property.images.all %}
+            <div class="property-thumbnail">
+                <img src="{{ property.images.first.image.url }}" alt="{{ property.title }}" style="max-width: 300px;">
+            </div>
+        {% endif %}
+    </div>
+</body>
+
+
+{% endblock content %}

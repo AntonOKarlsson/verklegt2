@@ -6,6 +6,7 @@
 </head>
 <body>
     <h1>{{ property.title }}</h1>
+    <p>Click <a href="{% url 'offer-by-id' id=property.id %}">here</a> to make on offer for this property</p>
     {% if property.header_image %}
         <div class="property-image">
             <img src="{{ property.header_image.url }}" alt="{{ property.title }}" style="max-width: 100%; height: auto;">

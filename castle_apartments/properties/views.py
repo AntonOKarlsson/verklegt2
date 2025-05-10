@@ -23,6 +23,19 @@ def get_property_by_id(request, id):
     property_obj = get_object_or_404(Property, id=id)
     return render(request, 'properties/property_detail.html', {'property': property_obj})
 
+
+def offer_on_property_by_id(request, id):
+    property_obj = get_object_or_404(Property, id=id)
+    property_images = property_obj.images.all()  # Get the property images
+
+    # Add context for the template
+    context = {
+        'property': property_obj,
+        'property_images': property_images,
+    }
+
+    return render(request, 'offers/offer_form.html', context)
+
 def property_search(request):
     query = request.GET.get("query", "")
     results = []
