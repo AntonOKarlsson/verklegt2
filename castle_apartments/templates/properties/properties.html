@@ -4,45 +4,29 @@
 
 {% block content %}
 
-<style>
-    .property-card {
-        border: 1px solid gray;
-        background-color: white;
-        padding: 10px;
-        height: 100%;
-    }
-
-    .property-card img {
-        width: 100%;
-        height: 160px;
-        object-fit: cover;
-    }
-
-    .property-info {
-        margin-top: 10px;
-    }
-</style>
-
 <h2 class="mt-3">All Properties</h2>
 
-<!-- Grid-only Property List -->
+<!-- Grid for Property List -->
 <div class="row" id="propertyContainer">
     {% for p in properties %}
     <div class="col-12 col-sm-6 col-md-4 mb-4">
-        <div class="property-card {% if p.is_sold %}sold{% endif %}">
-            <a href="{% url 'property-by-id' p.id %}">
-                {% if p.thumbnail %}
-                    <img src="{{ p.thumbnail.url }}" alt="Thumbnail of {{ p.title }}">
-                {% else %}
-                    <img src="{% static 'images/property_placeholder.png' %}" alt="No thumbnail">
-                {% endif %}
-            </a>
-            <div class="property-info">
-                <h3><a href="{% url 'property-by-id' p.id %}">{{ p.title }}</a></h3>
-                <p><strong>Price:</strong> {{ p.price|floatformat:0|intcomma }} kr</p>
-                <p><strong>Address:</strong> {{ p.address }}</p>
-                <p><strong>Rooms:</strong> {{ p.num_rooms }}</p>
-                <p><strong>Size:</strong> {{ p.size_sqm|floatformat:0 }} m²</p>
+        <div class="card h-100 bg-body text-body {% if p.is_sold %}sold{% endif %}">
+            {% if p.thumbnail %}
+                <img src="{{ p.thumbnail.url }}" class="card-img-top" alt="Thumbnail of {{ p.title }}">
+            {% else %}
+                <img src="{% static 'images/property_placeholder.png' %}" class="card-img-top" alt="No thumbnail">
+            {% endif %}
+
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'property-by-id' p.id %}" class="text-decoration-none text-primary">
+                        {{ p.title }}
+                    </a>
+                </h5>
+                <p class="card-text"><strong>Price:</strong> {{ p.price|floatformat:0|intcomma }} kr</p>
+                <p class="card-text"><strong>Address:</strong> {{ p.address }}</p>
+                <p class="card-text"><strong>Rooms:</strong> {{ p.num_rooms }}</p>
+                <p class="card-text"><strong>Size:</strong> {{ p.size_sqm|floatformat:0 }} m²</p>
             </div>
         </div>
     </div>
