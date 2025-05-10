@@ -5,12 +5,12 @@
 
 {% block content %}
 
-<h2 class="mt-3">All Properties</h2>
+<h2 class="text-center mt-3">Property list</h2>
 
 <!-- Grid for Property List -->
 <div class="row" id="propertyContainer">
     {% for p in properties %}
-    <div class="col-12 col-sm-6 col-md-4 mb-4">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
     <div class="card h-100 bg-body text-body {% if p.is_sold %}sold{% endif %}">
         {% if p.thumbnail_image %}
             <img src="{% thumbnail p.thumbnail_image.image 300x300 crop %}" class="card-img-top" alt="Thumbnail of {{ p.title }}">

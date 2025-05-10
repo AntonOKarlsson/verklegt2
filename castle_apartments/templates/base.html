@@ -5,14 +5,15 @@
     <title>Castle apartments</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- Bootstrap & Lightbox -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-    <style>
 
+    <style>
         body {
             transition: background-color 0.3s ease, color 0.3s ease;
         }
@@ -35,99 +36,91 @@
 
         main.container {
             padding-top: 2rem;
-            min-height:100vh;
-            #margin-top: 6rem;
+            min-height: 100vh;
         }
     </style>
 </head>
 <body data-bs-theme="light">
-    <header class="site-header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+<header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <!-- Fixed navbar-toggler attributes to use Bootstrap 5 syntax -->
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarToggle">
-            <div class="navbar-nav mr-auto">
-                <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
-                <a class="nav-item nav-link" href="{% url 'property-search' %}">Search</a>
-                <a class="nav-item nav-link" href="{% url 'properties' %}">Property list</a>
-                <a class="nav-item nav-link" href="#">Open houses</a>
-                <a class="nav-item nav-link" href="#">Financing</a>
-                <a class="nav-item nav-link" href="#">Statistics</a>
-            </div>
-            <!-- Navbar Right Side -->
-            <div class="navbar-nav ms-auto me-2">
+            <a class="navbar-brand me-3" href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Castle apartments logo" class="comp-logo">
+            </a>
+
+            <!-- Navbar toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarToggle">
+                <div class="navbar-nav mr-auto">
+                    <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
+                    <a class="nav-item nav-link" href="{% url 'property-search' %}">Search</a>
+                    <a class="nav-item nav-link" href="{% url 'properties' %}">Property list</a>
+                    <a class="nav-item nav-link" href="#">Open houses</a>
+                    <a class="nav-item nav-link" href="#">Financing</a>
+                    <a class="nav-item nav-link" href="#">Statistics</a>
+                </div>
+
+                <!-- Right side nav -->
+                <div class="navbar-nav ms-auto me-2">
+                    {% if user.is_authenticated %}
+                        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout ({{ user.get_full_name|default:user.username }})</a>
+                        <a class="nav-item nav-link" href="{% url 'updateuser' %}">Profile</a>
+                    {% else %}
+                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-item nav-link" href="{% url 'createuser' %}">Create user</a>
+                    {% endif %}
+                </div>
+
+                <!-- Theme toggle -->
+                <div class="form-check form-switch d-flex align-items-center">
+                    <input class="form-check-input p-2" type="checkbox" role="switch" id="flexSwitchCheckChecked" onclick="myFunction()" />
+                    <label class="form-check-label theme-label ms-2" for="flexSwitchCheckChecked" id="themeLabel">Light</label>
+                </div>
+
                 {% if user.is_authenticated %}
-                  <a class="nav-item nav-link" href='{% url 'logout' %}'>Logout ({{ user.get_full_name|default:user.username }})</a>
-                  <a class="nav-item nav-link" href='{% url 'updateuser' %}'>Profile</a>
-                {% else %}
-                  <a class="nav-item nav-link" href='{% url 'login' %}'>Login</a>
-                  <a class="nav-item nav-link" href='{% url 'createuser' %}'>Create user</a>
+                <!-- Profile image -->
+                <div class="navbar-nav text-end">
+                    <ul>
+                        <li>
+                            {% if user.first_name %}
+                                <img src="{% static 'images/homer.png' %}" alt="profile logo" class="rounded-circle" width="40px">
+                            {% else %}
+                                <img src="{% static 'images/default_user.png' %}" alt="profile logo" class="rounded-circle" width="40px">
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
                 {% endif %}
             </div>
-            <!-- Theme toggle switch -->
-            <div class="form-check form-switch d-flex align-items-center">
-                <input
-                    class="form-check-input p-2"
-                    type="checkbox"
-                    role="switch"
-                    id="flexSwitchCheckChecked"
-                    onclick="myFunction()"
-                />
-                <label class="form-check-label theme-label ms-2" for="flexSwitchCheckChecked" id="themeLabel">Light</label>
-            </div>
-                {% if user.is_authenticated %}
-                <!--profile image-->
-                    <div class="navbar-nav text-end">
-                        <ul>
-                            <li>
-                                {% if user.first_name %}
-                                    <img src="{% static 'images/homer.png' %}" alt="profile logo" class="rounded-circle" width=40px">
-                                {% else %}
-                                    <img src="{% static 'images/default_user.png' %}" alt="profile logo" class="rounded-circle" width=40px"->
-                                {% endif %}
-                            </li>
-                        </ul>
-                    </div>
-                {%  endif %}
-
-
-          </div>
         </div>
-      </nav>
-      <div class="py-4">
-          <a href="{% url 'home' %}">
-              <img src="{% static 'images/logo.png' %}" alt="Castle apartments logo" class="comp-logo">
-          </a>
-      </div>
-    </header>
+    </nav>
+</header>
 
-    <main role="main" class="container">
-      <div class="row">
-        <div class="col-md-8">
-          {% block content %}{% endblock %}
-        </div>
-      </div>
-    </main>
+<main role="main" class="container d-flex justify-content-center mt-5 pt-4">
+  <div class="col-lg-8 col-md-10">
+    {% block content %}{% endblock %}
+  </div>
+</main>
 
-    {% include 'footer.html' %}
+{% include 'footer.html' %}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-        // Theme toggle function - only changes main content area
-        function myFunction() {
-            const element = document.body;
-            const newTheme = element.dataset.bsTheme === "light" ? "dark" : "light";
-            element.dataset.bsTheme = newTheme;
+<script>
+    // Theme toggle function
+    function myFunction() {
+        const element = document.body;
+        const newTheme = element.dataset.bsTheme === "light" ? "dark" : "light";
+        element.dataset.bsTheme = newTheme;
 
-            const themeLabel = document.getElementById('themeLabel');
-            if (themeLabel) {
-                themeLabel.textContent = newTheme.charAt(0).toUpperCase() + newTheme.slice(1);
-            }
+        const themeLabel = document.getElementById('themeLabel');
+        if (themeLabel) {
+            themeLabel.textContent = newTheme.charAt(0).toUpperCase() + newTheme.slice(1);
         }
-    </script>
+    }
+</script>
 </body>
 </html>

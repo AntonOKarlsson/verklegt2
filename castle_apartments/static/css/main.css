@@ -181,3 +181,16 @@ a.article-title:hover {
     object-fit: cover;
     width: 100%;
 }
+
+main h1:first-of-type {
+    margin-top: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+main h1 {
+    margin-bottom: 0.75rem;
+}
+
+main p.subheading {
+    margin-bottom: 1.5rem;
+}
