@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'user',
     'properties',
+    'property_images',
 ]
 
 AUTH_USER_MODEL = 'user.User'
