@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.signals import post_save
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
@@ -12,7 +13,7 @@ class User(AbstractUser):
         return self.username
 
 class Seller(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='seller_profile')
     type = models.CharField(max_length=50, blank=True)
     logo_url = models.TextField(blank=True)
     cover_image_url = models.TextField(blank=True)
@@ -21,3 +22,15 @@ class Seller(models.Model):
 
     def __str__(self):
         return f"{self.user.username} (Seller)"
+
+def create_seller(sender, instance, created, **kwargs):
+    if created:
+        seller_profile = Seller(user=instance)
+        seller_profile.save()
+
+post_save.connect(create_seller, sender=User)
+
+
+
+
+

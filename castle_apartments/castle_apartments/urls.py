@@ -35,6 +35,8 @@ urlpatterns = [
     path('updateuser/',user.views.update_user, name='updateuser'),
     path('updatepassword/',user.views.update_password, name='updatepassword'),
 
+    path('updatesellerinfo/',user.views.update_sellerinfo, name='updatesellerinfo'),
+
 ]
 
 if settings.DEBUG:

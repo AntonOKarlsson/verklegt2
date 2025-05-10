@@ -5,9 +5,9 @@ from django.contrib import messages
 from user import forms
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-
-from user.forms import SignUpForm, UpdateUserForm, ChangePasswordForm
+from user.forms import SignUpForm, UpdateUserForm, ChangePasswordForm, SellerForm
 from django.contrib.auth import get_user_model
+from .models import create_seller, Seller
 
 User = get_user_model()
 
@@ -62,7 +62,7 @@ def update_user(request):
 
             login(request, current_user)
             messages.success(request, ('You have successfully updated your account.'))
-            return redirect('home')
+            #return redirect('home')
         return render(request, 'user/updateuser.html',{'user_form':user_form})
     else:
         messages.success(request, 'You must be logged in to update your account.')
@@ -89,6 +89,27 @@ def update_password(request):
         return render(request, 'user/updatepassword.html', {})
     else:
         messages.error(request, 'You must be logged in to update your account.')
+
+def update_sellerinfo(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+
+        try:
+            seller, created = Seller.objects.get_or_create(user=current_user)
+        except Exception as e:
+            print(f'Error fetching or creating seller: {e}')
+
+        seller_form = SellerForm(request.POST or None, instance=seller)
+
+        if seller_form.is_valid():
+            seller_form.save()
+
+            messages.success(request, ('You have successfully updated your account.'))
+            return redirect('home')
+        return render(request, 'user/updatesellerinfo.html',{'user_form':seller_form})
+    else:
+        messages.success(request, 'You must be logged in to update your account.')
+        return render(request, 'user/updatesellerinfo.html',{})
 
 
 

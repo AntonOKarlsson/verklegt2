@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, SetPasswordForm
 from django import forms
+from .models import Seller
 
 
 class UpdateUserForm(UserChangeForm):
@@ -64,3 +65,16 @@ class ChangePasswordForm(SetPasswordForm):
         User = get_user_model()
         model = User
         fields = ['new_password1','new_password2']
+
+class SellerForm(forms.ModelForm):
+    class Meta:
+        User = get_user_model()
+        model = Seller
+        fields = ['type', 'logo_url', 'cover_image_url', 'bio', 'agency_address']
+        widgets = {
+            'type': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Company Type'}),
+            'logo_url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Logo URL'}),
+            'cover_image_url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Cover Image URL'}),
+            'bio': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Bio'}),
+            'agency_address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Agency Address'}),
+        }
