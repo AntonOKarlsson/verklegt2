@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Property
 from  properties.models import Property
 from django.http import JsonResponse
+from property_images.models import PropertyImage
 
 def index(request):
     return render(request, 'test.html',{
@@ -11,7 +12,12 @@ def index(request):
 
 def property_view(request):
     properties = Property.objects.all()
+
+    for p in properties:
+        p.thumbnail_image = p.images.filter(is_thumbnail=True).first()
+
     return render(request, 'properties/properties.html', {'properties': properties})
+
 
 def get_property_by_id(request, id):
     property_obj = get_object_or_404(Property, id=id)
@@ -85,7 +91,8 @@ def json_search(request):
             'size_sqm': float(p.size_sqm) if p.size_sqm is not None else None,
             'num_rooms': p.num_rooms,
             'is_sold': p.is_sold,
-            #'thumbnail_url': p.thumbnail.url if p.thumbnail else None, - commented out until implemented
+            'thumbnail_url': p.images.filter(is_thumbnail=True).first().image.url
+            if p.images.filter(is_thumbnail=True).exists() else None,
         }
         for p in results
     ]
