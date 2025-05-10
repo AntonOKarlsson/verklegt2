@@ -54,9 +54,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                 </h5>
                                 <p class="card-text"><strong>Price:</strong> ${formatPrice(property.price)} kr</p>
                                 <p class="card-text"><strong>Address:</strong> ${property.address}</p>
-                                <p class="card-text"><strong>Size:</strong> ${property.size_sqm} m²</p>
-                                <a href="/properties/${property.id}/" class="btn btn-sm btn-outline-primary mt-2">View Details</a>
-                            </div>
+                                <p class="card-text"><strong>Rooms:</strong> ${property.num_rooms ?? '—'}</p>
+                                <p class="card-text"><strong>Size:</strong> ${property.size_sqm ? Math.round(Number(property.size_sqm)) + ' m²' : '— m²'}</p>                            </div>
                         </div>
                     `;
 

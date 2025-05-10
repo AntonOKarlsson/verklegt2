@@ -82,7 +82,10 @@ def json_search(request):
             'title': p.title,
             'address': p.address,
             'price': float(p.price),
+            'size_sqm': float(p.size_sqm) if p.size_sqm is not None else None,
+            'num_rooms': p.num_rooms,
             'is_sold': p.is_sold,
+            #'thumbnail_url': p.thumbnail.url if p.thumbnail else None, - commented out until implemented
         }
         for p in results
     ]

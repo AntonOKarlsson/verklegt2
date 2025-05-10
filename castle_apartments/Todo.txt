@@ -3,3 +3,4 @@ make/view/accept offers
 view property + photos
 create user
 view/modify profile
+add thumbnail to property model (þarf svo að uncommenta í property view)
