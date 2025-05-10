@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'properties',
     'property_images',
     'easy_thumbnails',
+    'offer',
 ]
 
 AUTH_USER_MODEL = 'user.User'
