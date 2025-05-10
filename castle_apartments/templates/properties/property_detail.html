@@ -26,6 +26,18 @@
     <p><strong>Built Year:</strong> {{ property.built_year }}</p>
     <p><strong>Sold:</strong> {% if property.is_sold %}Yes{% else %}No{% endif %}</p>
     <p><strong>Created At:</strong> {{ property.created_at }}</p>
+    <div class="property-details">
+        
+        <div class="property-gallery">
+            {% for image in property.images.all %}
+            <div class="gallery-item">
+                <a href="{{ image.image.url }}" data-lightbox="property-{{ property.id }}" data-title="{{ property.title }} - Image {{ forloop.counter }}">
+                    <img src="{{ image.image.url }}" alt="{{ property.title }} - Image {{ forloop.counter }}">
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 
     <hr>
     <p><a href="{% url 'properties' %}">← Back to Properties</a></p>
