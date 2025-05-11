@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>{{ seller.get_full_name }}</h2>
+
+{% if seller.profile_image %}
+    <img src="{{ seller.profile_image.url }}" alt="Seller" class="rounded" width="120">
+{% endif %}
+
+{% if seller.seller_type %}
+    <p><strong>Type:</strong> {{ seller.seller_type }}</p>
+{% endif %}
+
+{% if seller.seller_type == "Real Estate Agency" %}
+    <p><strong>Address:</strong> {{ seller.address }}, {{ seller.city }}, {{ seller.postal_code }}</p>
+{% endif %}
+
+{% if seller.bio %}
+    <p>{{ seller.bio }}</p>
+{% endif %}
+
+<hr>
+<h4>Properties for Sale</h4>
+<div class="row g-4">
+    {% for p in properties %}
+        <div class="col-md-4">
+            <div class="card">
+                {% if p.header_image %}
+                    <img src="{{ p.header_image.url }}" class="card-img-top" alt="{{ p.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ p.title }}</h5>
+                    <p class="card-text">{{ p.address }}</p>
+                    <a href="{% url 'property-by-id' p.id %}" class="btn btn-sm btn-outline-primary">View</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>This seller has no listed properties at the moment.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

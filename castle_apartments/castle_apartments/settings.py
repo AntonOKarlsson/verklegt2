@@ -72,10 +72,13 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'castle_apartments.context_processor.footer_info',
             ],
+            'libraries': {
+                'thumbnail': 'easy_thumbnails.templatetags.thumbnail',
+            },
         },
     },
-
 ]
+
 
 WSGI_APPLICATION = 'castle_apartments.wsgi.application'
 

@@ -4,44 +4,71 @@
 <head>
     <title>{{ property.title }}</title>
 </head>
-<body>
-    <h1>{{ property.title }}</h1>
-    <p>Click <a href="{% url 'offer-by-id' id=property.id %}">here</a> to make on offer for this property</p>
-    {% if property.header_image %}
-        <div class="property-image">
-            <img src="{{ property.header_image.url }}" alt="{{ property.title }}" style="max-width: 100%; height: auto;">
-        </div>
-    {% else %}
-        <div class="property-image">
-            <p>No image available</p>
-        </div>
-    {% endif %}
 
-    <p><strong>Description:</strong> {{ property.description }}</p>
-    <p><strong>Price:</strong> {{ property.price }} kr</p>
-    <p><strong>Address:</strong> {{ property.address }}</p>
-    <p><strong>Postal Code:</strong> {{ property.postal_code }}</p>
-    <p><strong>Property Type:</strong> {{ property.property_type }}</p>
-    <p><strong>Number of Rooms:</strong> {{ property.num_rooms }}</p>
-    <p><strong>Size (sqm):</strong> {{ property.size_sqm }}</p>
-    <p><strong>Built Year:</strong> {{ property.built_year }}</p>
-    <p><strong>Sold:</strong> {% if property.is_sold %}Yes{% else %}No{% endif %}</p>
-    <p><strong>Created At:</strong> {{ property.created_at }}</p>
-    <div class="property-details">
-        
-        <div class="property-gallery">
-            {% for image in property.images.all %}
-            <div class="gallery-item">
-                <a href="{{ image.image.url }}" data-lightbox="property-{{ property.id }}" data-title="{{ property.title }} - Image {{ forloop.counter }}">
-                    <img src="{{ image.image.url }}" alt="{{ property.title }} - Image {{ forloop.counter }}">
-                </a>
+<div class="container my-5">
+    <div class="row">
+        <!-- Left column: Property info -->
+        <div class="col-lg-8">
+            <div class="card mb-4 p-4">
+                <h1 class="mb-4">{{ property.title }}</h1>
+
+                {% if property.header_image %}
+                    <div class="mb-4">
+                        <img src="{{ property.header_image.url }}" alt="{{ property.title }}" class="img-fluid rounded shadow-sm">
+                    </div>
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
+
+                <p><strong>Description:</strong> {{ property.description }}</p>
+                <p><strong>Price:</strong> {{ property.price }} kr</p>
+                <p><strong>Address:</strong> {{ property.address }}</p>
+                <p><strong>Postal Code:</strong> {{ property.postal_code }}</p>
+                <p><strong>Property Type:</strong> {{ property.property_type }}</p>
+                <p><strong>Number of Rooms:</strong> {{ property.num_rooms }}</p>
+                <p><strong>Size (sqm):</strong> {{ property.size_sqm }}</p>
+                <p><strong>Built Year:</strong> {{ property.built_year }}</p>
+                <p><strong>Sold:</strong> {% if property.is_sold %}Yes{% else %}No{% endif %}</p>
+                <p><strong>Created At:</strong> {{ property.created_at }}</p>
+
+                <hr>
+                <h4>Gallery</h4>
+                <div class="property-gallery">
+                    {% for image in property.images.all %}
+                    <div class="gallery-item">
+                        <a href="{{ image.image.url }}" data-lightbox="property-{{ property.id }}" data-title="{{ property.title }} - Image {{ forloop.counter }}">
+                            <img src="{{ image.image.url }}" alt="{{ property.title }} - Image {{ forloop.counter }}">
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            {% endfor %}
+        </div>
+
+        <!-- Right column: Seller info and offer link -->
+        <div class="col-lg-4">
+            <div class="card mb-4 p-3">
+                <h5>Seller Information</h5>
+                <div class="d-flex align-items-center">
+                    <img src="{{ property.seller.profile_image.url }}" alt="Seller" class="rounded-circle me-3"
+                         width="60" height="60">
+                    <div>
+                        <p class="mb-1"><strong>{{ property.seller.name }}</strong></p>
+                        <a href="{% url 'seller-profile' seller_id=property.seller.id %}">View Profile</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4 p-3">
+                {% if property.is_sold %}
+                    <div class="alert alert-secondary">This property has been sold.</div>
+                {% else %}
+                    <a href="{% url 'offer-by-id' id=property.id %}" class="btn btn-primary w-100">Submit Purchase Offer</a>
+                {% endif %}
+            </div>
+
+            <a href="{% url 'properties' %}" class="btn btn-outline-secondary w-100">← Back to Properties</a>
         </div>
     </div>
-
-    <hr>
-    <p><a href="{% url 'properties' %}">← Back to Properties</a></p>
-</body>
-
+</div>
 {% endblock content %}

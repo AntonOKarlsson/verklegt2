@@ -21,7 +21,7 @@ from properties.views import property_view
 import user.views
 from django.conf.urls.static import static
 from django.conf import settings
-from user.views import login_user, logout_user
+from user.views import login_user, logout_user, seller_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,8 +35,8 @@ urlpatterns = [
     path('updateuser/',user.views.update_user, name='updateuser'),
     path('updatepassword/',user.views.update_password, name='updatepassword'),
 
+    path('seller/<int:seller_id>/', seller_profile, name='seller-profile'),
     path('updatesellerinfo/',user.views.update_sellerinfo, name='updatesellerinfo'),
-
 ]
 
 if settings.DEBUG:

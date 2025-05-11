@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.contrib import messages
@@ -8,6 +8,7 @@ from django import forms
 from user.forms import SignUpForm, UpdateUserForm, ChangePasswordForm, SellerForm
 from django.contrib.auth import get_user_model
 from .models import create_seller, Seller
+from properties.models import Property
 
 User = get_user_model()
 
@@ -90,6 +91,14 @@ def update_password(request):
     else:
         messages.error(request, 'You must be logged in to update your account.')
 
+def seller_profile(request, seller_id):
+    seller = get_object_or_404(Seller, user__id=seller_id)
+    properties = Property.objects.filter(seller=seller)
+
+    return render(request, 'user/seller_profile.html', {
+        'seller': seller,
+        'properties': properties,
+    })
 def update_sellerinfo(request):
     if request.user.is_authenticated:
         current_user = request.user
