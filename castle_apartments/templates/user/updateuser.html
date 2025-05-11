@@ -3,19 +3,24 @@
 <body>
         <br/>
         <br/>
-    <form class="updateuser" method="post" action="{%  url 'updateuser' %}">
-        {% csrf_token %}
+        <table>
+            <tr>
+                <td style="width:70%">
+                    <form class="updateuser" method="post" enctype='multipart/form-data' action="{%  url 'updateuser' %}">
+                        {% csrf_token %}
 
-        {{ user_form.as_p }}
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <button type="submit" style="margin-top:10px" class="btn btn-primary">
-            Save updated info
-        </button>
+                        {{ user_form.as_p }}
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <button type="submit" style="margin-top:10px" class="btn btn-primary">
+                            Save updated info
+                        </button>
 
-    </form>
+                    </form>
+            </tr>
+        </table>
     <br/>
 
         <div style="margin-top:-170px;margin-left:0px">
@@ -23,6 +28,11 @@
                 <a href="{%  url 'updatesellerinfo' %}" style="padding-bottom:5px" class="btn btn-info">Update info</a>
             {% endif %}
             <a href="{%  url 'updatepassword' %}" class="btn btn-warning">Change Password</a>
+        </div>
+        <div style="margin-top:-400px;margin-left:600px;">
+            {%  if user.profile_image  %}
+                <img style='height:250px' src="{{user.profile_image.url}}">
+            {%  endif %}
         </div>
 
 

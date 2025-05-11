@@ -85,8 +85,8 @@
                 <div class="navbar-nav text-end">
                     <ul>
                         <li>
-                            {% if user.first_name %}
-                                <img src="{% static 'images/homer.png' %}" alt="profile logo" class="rounded-circle" width="40px">
+                            {% if user.profile_image %}
+                                <img src="{{user.profile_image.url}}" alt="profile logo" class="rounded-circle" width="40px">
                             {% else %}
                                 <img src="{% static 'images/default_user.png' %}" alt="profile logo" class="rounded-circle" width="40px">
                             {% endif %}

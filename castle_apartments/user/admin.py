@@ -9,7 +9,7 @@ from .models import User, Seller
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {"fields": ("username", "password")}),
-        (_("Personal info"), {"fields": ("full_name", "email", "profile_image_url")}),
+        (_("Personal info"), {"fields": ("full_name", "email", "profile_image")}),
         (_("Permissions"), {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")}),
         (_("Roles"), {"fields": ("is_seller",)}),
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
