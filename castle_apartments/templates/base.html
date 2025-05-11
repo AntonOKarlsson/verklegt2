@@ -100,7 +100,15 @@
 </header>
 
 <main role="main" class="container d-flex justify-content-center mt-5 pt-4">
+
   <div class="col-lg-8 col-md-10">
+        {%  if messages %}
+            {%  for message in messages %}
+                {{ message }}
+            {%  endfor %}
+        {% endif %}
+  <br/>
+
     {% block content %}{% endblock %}
   </div>
 </main>
