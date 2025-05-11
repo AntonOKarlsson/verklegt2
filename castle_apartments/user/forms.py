@@ -4,29 +4,6 @@ from django import forms
 from .models import Seller
 
 
-class UpdateUserForm(UserChangeForm):
-    #sérstakar þakkir fær github-userinn flatplanet fyrir hjálp í þessum kóda
-    password = None
-    #password stuff hidden for now
-    email = forms.EmailField(label="", widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Email Address'}))
-    first_name = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'First Name'}))
-    last_name = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Last Name'}))
-    is_seller = forms.BooleanField(required=False)
-
-
-    class Meta:
-        User = get_user_model()
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'is_seller')
-
-    def __init__(self, *args, **kwargs):
-        super(UpdateUserForm, self).__init__(*args, **kwargs)
-
-        self.fields['username'].widget.attrs['class'] = 'form-control'
-        self.fields['username'].widget.attrs['placeholder'] = 'User Name'
-        self.fields['username'].label = ''
-        self.fields['username'].help_text = '<span class="form-text text-muted"><small>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small></span>'
-
 
 
 class SignUpForm(UserCreationForm):
@@ -65,6 +42,31 @@ class ChangePasswordForm(SetPasswordForm):
         User = get_user_model()
         model = User
         fields = ['new_password1','new_password2']
+
+
+class UpdateUserForm(UserChangeForm):
+    #sérstakar þakkir fær github-userinn flatplanet fyrir hjálp í þessum kóda
+    password = None
+    #password stuff hidden for now
+    email = forms.EmailField(label="Email address", widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Email Address'}))
+    first_name = forms.CharField(label="First Name", max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'First Name'}))
+    last_name = forms.CharField(label="Last Name", max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Last Name'}))
+    is_seller = forms.BooleanField(required=False)
+
+
+    class Meta:
+        User = get_user_model()
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'is_seller')
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateUserForm, self).__init__(*args, **kwargs)
+
+        self.fields['username'].widget.attrs['class'] = 'form-control'
+        self.fields['username'].widget.attrs['placeholder'] = 'User Name'
+        self.fields['username'].label = 'User name'
+        self.fields['username'].help_text = '<span class="form-text text-muted"><small>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small></span>'
+
 
 class SellerForm(forms.ModelForm):
     class Meta:
