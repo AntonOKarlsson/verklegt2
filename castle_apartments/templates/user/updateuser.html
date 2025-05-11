@@ -6,7 +6,7 @@
         <table>
             <tr>
                 <td style="width:70%">
-                    <form class="updateuser" method="post" enctype='multipart/form-data' action="{%  url 'updateuser' %}">
+                    <form class="updateuser" method="post" enctype='multipart/form-data' action="{%  url 'user:updateuser' %}">
                         {% csrf_token %}
 
                         {{ user_form.as_p }}
@@ -25,9 +25,9 @@
 
         <div style="margin-top:-170px;margin-left:0px">
             {% if user.is_seller %}
-                <a href="{%  url 'updatesellerinfo' %}" style="padding-bottom:5px" class="btn btn-info">Update info</a>
+                <a href="{%  url 'user:updatesellerinfo' %}" style="padding-bottom:5px" class="btn btn-info">Update info</a>
             {% endif %}
-            <a href="{%  url 'updatepassword' %}" class="btn btn-warning">Change Password</a>
+            <a href="{%  url 'user:updatepassword' %}" class="btn btn-warning">Change Password</a>
         </div>
         <div style="margin-top:-400px;margin-left:600px;">
             {%  if user.profile_image  %}

@@ -25,18 +25,9 @@ from user.views import login_user, logout_user, seller_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/', test_view, name='test'),
     path('properties/', include('properties.urls')),
     path('', home, name='home'),
-
-    path('login/', user.views.login_user, name='login'),
-    path('logout/', user.views.logout_user, name='logout'),
-    path('createuser/', user.views.create_user, name='createuser'),
-    path('updateuser/',user.views.update_user, name='updateuser'),
-    path('updatepassword/',user.views.update_password, name='updatepassword'),
-
-    path('seller/<int:seller_id>/', seller_profile, name='seller-profile'),
-    path('updatesellerinfo/',user.views.update_sellerinfo, name='updatesellerinfo'),
+    path('user/', include('user.urls')),
 ]
 
 if settings.DEBUG:

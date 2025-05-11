@@ -66,11 +66,11 @@
                 <!-- Right side nav -->
                 <div class="navbar-nav ms-auto me-2">
                     {% if user.is_authenticated %}
-                        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout ({{ user.get_full_name|default:user.username }})</a>
-                        <a class="nav-item nav-link" href="{% url 'updateuser' %}">Profile</a>
+                        <a class="nav-item nav-link" href="{% url 'user:logout' %}">Logout ({{ user.get_full_name|default:user.username }})</a>
+                        <a class="nav-item nav-link" href="{% url 'user:updateuser' %}">Profile</a>
                     {% else %}
-                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                        <a class="nav-item nav-link" href="{% url 'createuser' %}">Create user</a>
+                        <a class="nav-item nav-link" href="{% url 'user:login' %}">Login</a>
+                        <a class="nav-item nav-link" href="{% url 'user:createuser' %}">Create user</a>
                     {% endif %}
                 </div>
 

@@ -58,7 +58,7 @@
                         <p class="mb-1">
                             <strong>{{ property.seller.user.get_full_name|default:property.seller.user.username }}</strong>
                         </p>
-                        <a href="{% url 'seller-profile' seller_id=property.seller.user.id %}">View Profile</a>
+                        <a href="{% url 'user:seller-profile' seller_id=property.seller.user.id %}">View Profile</a>
                     </div>
                 </div>
             </div>
