@@ -1,31 +1,59 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<body>
-    <h1>Your offer for {{ property.title }}</h1>
 
-    <form method="post" action="{% url 'offer-by-id' id=property.id %}">
-    {% csrf_token %}
+<div class="container my-5">
+    <div class="row">
+        <!-- Left column: Offer form -->
+        <div class="col-lg-8">
+            <div class="card mb-4 p-4">
+                <h2 class="mb-3">Submit Your Offer</h2>
 
-    <div class="form-group">
-        <label for="offer_price">Your offer (kr):</label>
-        <input type="number" id="offer_price" name="offer_price" step="0.01" min="0" required><br><br>
-    </div>
+                <form method="post" action="{% url 'offer-by-id' id=property.id %}">
+                    {% csrf_token %}
 
-    <input type="submit" value="Submit Offer">
-    </form>
+                    <div class="mb-3">
+                        <label for="offer_price" class="form-label">Your offer (kr):</label>
+                        <input type="number" id="offer_price" name="offer_price" step="0.01" min="0" required class="form-control">
+                    </div>
 
-    <div class="property-summary">
-        <h3>Property Summary</h3>
-        <p><strong>Address:</strong> {{ property.address }}</p>
-        <p><strong>Asking Price:</strong> {{ property.price }} kr</p>
-        {% if property.images.all %}
-            <div class="property-thumbnail">
-                <img src="{{ property.images.first.image.url }}" alt="{{ property.title }}" style="max-width: 300px;">
+                    <button type="submit" class="btn btn-primary">Submit Offer</button>
+                </form>
             </div>
-        {% endif %}
-    </div>
-</body>
+        </div>
 
+        <!-- Right column: Property summary + Seller info -->
+        <div class="col-lg-4">
+            <!-- Property Summary -->
+            <div class="card mb-4 p-3">
+                <h5>Property Summary</h5>
+                <p><strong>Address:</strong> {{ property.address }}</p>
+                <p><strong>Asking Price:</strong> {{ property.price }} kr</p>
+                <p><strong>Size:</strong> {{ property.size_sqm|floatformat:0 }} m²</p>
+                <p><strong>Rooms:</strong> {{ property.num_rooms }}</p>
+
+                {% if property.thumbnail_image %}
+                    <img src="{{ property.thumbnail_image.image.url }}" alt="{{ property.title }}" class="img-fluid rounded shadow-sm mt-2">
+                {% endif %}
+            </div>
+
+            <!-- Seller Info -->
+            <div class="card mb-4 p-3">
+                <h5>Seller</h5>
+                <div class="d-flex align-items-center">
+                    {% if property.seller.user.profile_image %}
+                        <img src="{{ property.seller.user.profile_image.url }}" alt="Seller" class="rounded-circle me-3"
+                             width="60" height="60">
+                    {% endif %}
+                    <div>
+                        <p class="mb-1"><strong>{{ property.seller.user.get_full_name|default:property.seller.user.username }}</strong></p>
+                        <a href="{% url 'user:seller-profile' seller_id=property.seller.user.id %}">View Profile</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="{% url 'property-by-id' property.id %}" class="btn btn-outline-secondary w-100">← Back to Property</a>
+        </div>
+    </div>
+</div>
 
 {% endblock content %}
