@@ -35,8 +35,8 @@ def logout_user(request):
 
 def create_user(request):
     form = SignUpForm()
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
+    if request.method == 'POST' or request.method == 'FILES':
+        form = SignUpForm(request.POST or None, request.FILES or None)
         if form.is_valid():
             form.save()
             username = form.cleaned_data['username']
@@ -55,7 +55,7 @@ def create_user(request):
 def update_user(request):
     if request.user.is_authenticated:
         current_user = User.objects.get(id=request.user.id)
-        user_form = UpdateUserForm(request.POST or None, instance=current_user)
+        user_form = UpdateUserForm(request.POST or None,request.FILES or None, instance=current_user)
 
         if user_form.is_valid():
             user_form.save()
@@ -71,7 +71,7 @@ def update_user(request):
 def update_password(request):
     if request.user.is_authenticated:
         current_user = request.user
-        if request.method == 'POST':
+        if request.method == 'POST' or request.method == 'FILES':
             form = ChangePasswordForm(current_user, request.POST)
             if form.is_valid():
                 form.save()

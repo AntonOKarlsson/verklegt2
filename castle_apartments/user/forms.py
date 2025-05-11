@@ -12,12 +12,12 @@ class SignUpForm(UserCreationForm):
     first_name = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'First Name'}))
     last_name = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Last Name'}))
     is_seller = forms.BooleanField(required=False)
-
+    profile_image = forms.ImageField(label="", required=False, widget=forms.FileInput(attrs={'class':'form-control'}))
 
     class Meta:
         User = get_user_model()
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'is_seller', 'password1', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'email', 'is_seller','profile_image', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
@@ -52,12 +52,13 @@ class UpdateUserForm(UserChangeForm):
     first_name = forms.CharField(label="First Name", max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'First Name'}))
     last_name = forms.CharField(label="Last Name", max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Last Name'}))
     is_seller = forms.BooleanField(required=False)
+    profile_image = forms.ImageField(label="Profile Image", required=False)
 
 
     class Meta:
         User = get_user_model()
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'is_seller')
+        fields = ('username', 'first_name', 'last_name', 'email', 'is_seller', 'profile_image',)
 
     def __init__(self, *args, **kwargs):
         super(UpdateUserForm, self).__init__(*args, **kwargs)
