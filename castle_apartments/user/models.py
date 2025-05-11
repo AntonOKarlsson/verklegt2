@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=100, blank=True)
-    profile_image_url = models.TextField(blank=True)
+    profile_image = models.ImageField(null=True, blank=True, upload_to='profile_images/')
     is_seller = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
