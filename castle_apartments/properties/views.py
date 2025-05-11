@@ -4,11 +4,6 @@ from  properties.models import Property
 from django.http import JsonResponse
 from property_images.models import PropertyImage
 
-def index(request):
-    return render(request, 'test.html',{
-        "properties": Property.objects.all(),
-        })
-    #return HttpResponse('Response from property')
 
 def property_view(request):
     properties = Property.objects.all()
@@ -32,20 +27,6 @@ def offer_on_property_by_id(request, id):
     }
 
     return render(request, 'offers/offer_form.html', context)
-
-def property_search(request):
-    query = request.GET.get("query", "")
-    results = []
-
-    if query:
-        results = Property.objects.filter(
-            title__icontains=query
-        )
-
-    return render(request, 'properties/property_search.html', {
-        'results': results,
-        'query': query
-    })
 
 def property_search_page(request):
     postal_codes = Property.objects.values_list('postal_code', flat=True).distinct().order_by('postal_code')
