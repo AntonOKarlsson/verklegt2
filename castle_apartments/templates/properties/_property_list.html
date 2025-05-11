@@ -1,0 +1,32 @@
+{% load static %}
+{% load humanize %}
+{% load thumbnail %}
+
+<!-- Grid for Property List -->
+<div class="row" id="propertyContainer">
+    {% for p in properties %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card h-100 bg-body text-body {% if p.is_sold %}sold{% endif %}">
+                {% if p.thumbnail_image %}
+                    <img src="{% thumbnail p.thumbnail_image.image 300x300 crop %}" class="card-img-top" alt="Thumbnail of {{ p.title }}">
+                {% else %}
+                    <img src="{% static 'images/property_placeholder.png' %}" class="card-img-top" alt="No thumbnail">
+                {% endif %}
+
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'property-by-id' p.id %}" class="text-decoration-none text-primary">
+                            {{ p.title }}
+                        </a>
+                    </h5>
+                    <p class="card-text"><strong>Price:</strong> {{ p.price|floatformat:0|intcomma }} kr</p>
+                    <p class="card-text"><strong>Address:</strong> {{ p.address }}</p>
+                    <p class="card-text"><strong>Rooms:</strong> {{ p.num_rooms }}</p>
+                    <p class="card-text"><strong>Size:</strong> {{ p.size_sqm|floatformat:0 }} m²</p>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No properties found.</p>
+    {% endfor %}
+</div>

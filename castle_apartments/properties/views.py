@@ -13,9 +13,6 @@ def index(request):
 def property_view(request):
     properties = Property.objects.all()
 
-    for p in properties:
-        p.thumbnail_image = p.images.filter(is_thumbnail=True).first()
-
     return render(request, 'properties/properties.html', {'properties': properties})
 
 

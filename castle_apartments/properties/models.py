@@ -17,5 +17,9 @@ class Property(models.Model):
     is_sold = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def thumbnail_image(self):
+        return self.images.filter(is_thumbnail=True).first()
+
     def __str__(self):
         return self.title

@@ -93,12 +93,13 @@ def update_password(request):
 
 def seller_profile(request, seller_id):
     seller = get_object_or_404(Seller, user__id=seller_id)
-    properties = Property.objects.filter(seller=seller)
+    properties = Property.objects.filter(seller=seller).prefetch_related('images')
 
     return render(request, 'user/seller_profile.html', {
         'seller': seller,
         'properties': properties,
     })
+
 def update_sellerinfo(request):
     if request.user.is_authenticated:
         current_user = request.user

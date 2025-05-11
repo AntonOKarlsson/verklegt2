@@ -50,11 +50,15 @@
             <div class="card mb-4 p-3">
                 <h5>Seller Information</h5>
                 <div class="d-flex align-items-center">
-                    <img src="{{ property.seller.profile_image.url }}" alt="Seller" class="rounded-circle me-3"
-                         width="60" height="60">
+                    {% if property.seller.user.profile_image %}
+                        <img src="{{ property.seller.user.profile_image.url }}" alt="Seller" class="rounded-circle me-3"
+                             width="60" height="60">
+                    {% endif %}
                     <div>
-                        <p class="mb-1"><strong>{{ property.seller.name }}</strong></p>
-                        <a href="{% url 'seller-profile' seller_id=property.seller.id %}">View Profile</a>
+                        <p class="mb-1">
+                            <strong>{{ property.seller.user.get_full_name|default:property.seller.user.username }}</strong>
+                        </p>
+                        <a href="{% url 'seller-profile' seller_id=property.seller.user.id %}">View Profile</a>
                     </div>
                 </div>
             </div>
