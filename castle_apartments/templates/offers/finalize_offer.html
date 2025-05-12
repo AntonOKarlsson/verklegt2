@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<body>
+
+<div class="card mb-4 p-4">
+    <h1 class="mb-4">Finalizing Offer for {{ property.title }}</h1>
+    {% if property.header_image %}
+    <div class="mb-4">
+        <img src="{{ property.header_image.url }}" alt="{{ property.title }}" class="img-fluid rounded shadow-sm">
+    </div>
+    {% else %}
+    <p>No image available</p>
+    {% endif %}
+
+    <p><strong>Offer Price:</strong> ISK{{ offer.offer_price|floatformat:2 }}</p>
+    <p><strong>Listed Price:</strong> ISK{{ property.price|floatformat:2 }}</p>
+    <p><strong>Property:</strong> {{ property.title }}</p>
+    <p><strong>Status:</strong> {{ offer.get_status_display }}</p>
+
+</div>
+<div>
+    <p>How would you like to finance the payment for the property?</p>
+    <input type="radio" id="Credit card" name="payment" value="Credit card">
+    <label for="Credit card">Credit card</label><br>
+    <input type="radio" id="Bank transfer" name="payment" value="Bank transfer">
+    <label for="Bank transfer">Bank transfer</label><br>
+    <input type="radio" id="Mortgage" name="payment" value="Mortgage">
+    <label for="Mortgage">Mortgage</label>
+
+</div>
+
+<div>
+    <br/>
+    <a href="{% url 'user:confirm_offer' offer_id=offer.id %}" class="btn btn-primary">Review and confirm</a>
+</div>
+
+</body>
+{% endblock content %}

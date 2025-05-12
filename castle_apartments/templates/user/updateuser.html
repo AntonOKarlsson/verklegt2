@@ -23,7 +23,7 @@
         </table>
     <br/>
 
-        <div style="margin-top:-170px;margin-left:0px">
+        <div style="margin-top:-120px;margin-left:0px">
             {% if user.is_seller %}
                 <a href="{%  url 'user:updatesellerinfo' %}" style="padding-bottom:5px" class="btn btn-info">Update info</a>
             {% endif %}
@@ -35,6 +35,9 @@
             {%  endif %}
         </div>
 
+        <div>
+            <a href="{% url 'user:list_of_offers' %}" class="btn btn-primary" style="margin-top:300px">See all offers you have made</a>
+        </div>
 
 
 

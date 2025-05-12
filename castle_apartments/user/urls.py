@@ -11,4 +11,8 @@ urlpatterns = [
     path('updatepassword/', views.update_password, name='updatepassword'),
     path('updatesellerinfo/', views.update_sellerinfo, name='updatesellerinfo'),
     path('seller/<int:seller_id>/', views.seller_profile, name='seller-profile'),
+    path('offers/', views.ListOfOffers.as_view(), name='list_of_offers'),
+    path('offers/user/<int:user_id>/', views.ListOfOffers.as_view(), name='list_of_offers_by_user'),
+    path('offers/finalize/<int:offer_id>/', views.get_offer_by_offer_id, name='finalize_offer'),
+    path('offers/confirm/<int:offer_id>/', views.confirm_offer, name='confirm_offer'),
 ]

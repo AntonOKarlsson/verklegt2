@@ -9,6 +9,10 @@ from user.forms import SignUpForm, UpdateUserForm, ChangePasswordForm, SellerFor
 from django.contrib.auth import get_user_model
 from .models import create_seller, Seller
 from properties.models import Property
+from django.views.generic import DetailView, ListView
+from django.http import JsonResponse
+from offer.models import PurchaseOffer
+
 
 User = get_user_model()
 
@@ -120,8 +124,40 @@ def update_sellerinfo(request):
         messages.success(request, 'You must be logged in to update your account.')
         return render(request, 'user/updatesellerinfo.html',{})
 
+def get_all_offers(offer):
+    return {
+        'id': offer.id,
+        'user_id': offer.user_id,
+        'user': str(offer.user) if offer.user else None,
+        'property_id': offer.property_id,
+        'property': str(offer.property),
+        'offer_price': str(offer.offer_price),
+        'status': offer.status,
+        'status_display': offer.get_status_display(),
+        'submitted_at': offer.submitted_at.isoformat() if offer.submitted_at else None,
+        'expires_at': offer.expires_at.isoformat() if offer.expires_at else None,
+    }
 
+class ListOfOffers(ListView):
+    model = PurchaseOffer
+    template_name = 'offers/offers_list.html'
+    context_object_name = 'offers'
 
+    def get_queryset(self):
+        return PurchaseOffer.objects.filter(user=self.request.user)
 
+def get_offer_by_offer_id(request, offer_id):
+    offer_obj = get_object_or_404(PurchaseOffer, id=offer_id)
+    property_obj = offer_obj.property
+    return render(request, 'offers/finalize_offer.html', {
+        'property': property_obj,
+        'offer': offer_obj
+    })
 
-
+def confirm_offer(request, offer_id):
+    offer_obj = get_object_or_404(PurchaseOffer, id=offer_id)
+    property_obj = offer_obj.property
+    return render(request, 'offers/confirm_offer.html', {
+        'property': property_obj,
+        'offer': offer_obj
+    })
