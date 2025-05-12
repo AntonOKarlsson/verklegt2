@@ -23,8 +23,7 @@ def login_user(request):
             return redirect('home')
         else:
             messages.success(request,('Invalid username or password.'))
-            return redirect('login')
-
+            return redirect('user:login')
     else:
         return render(request, 'user/login.html')
 
@@ -49,9 +48,9 @@ def create_user(request):
             return redirect('home')
         else:
             messages.error(request, 'User creation failed.')
-            return redirect('create_user')
+            return redirect('user:createuser')
     else:
-        return render(request, 'user/createuser.html',{'form':form})
+        return render(request, 'user/createuser.html', {'form': form})
 
 def update_user(request):
     if request.user.is_authenticated:
