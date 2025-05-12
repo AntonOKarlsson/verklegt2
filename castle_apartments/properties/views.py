@@ -134,3 +134,20 @@ def json_search(request):
         })
 
     return JsonResponse({'data': data})
+@login_required
+def add_property(request):
+    property_form=PropertyForm()
+    if not request.user.is_seller:
+        messages.error(request, "You must be a seller to add a property.")
+        return redirect('home')
+
+    if request.method == 'POST':
+        property_form = PropertyForm(request.POST, request.FILES)
+
+        if property_form.is_valid():
+            property_form.save()
+            messages.success(request, 'Property added successfully.')
+            return redirect('home')
+
+    return render(request, 'properties/add_property.html', {'property_form':property_form})
+
