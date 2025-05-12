@@ -75,7 +75,8 @@ class SellerForm(forms.ModelForm):
         model = Seller
         fields = ['type', 'logo_url', 'cover_image_url', 'bio', 'agency_address']
         widgets = {
-            'type': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Company Type'}),
+            #'type': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Company Type'}),
+            'type': forms.Select(attrs={'class':'form-control', 'placeholder': 'Company Type'}),
             'logo_url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Logo URL'}),
             'cover_image_url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Cover Image URL'}),
             'bio': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Bio'}),

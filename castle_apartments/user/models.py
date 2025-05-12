@@ -13,7 +13,8 @@ class User(AbstractUser):
         return self.username
 
 class Seller(models.Model):
-    TYPE_PROPERITES = [('real_estate','Real Estate agency'),
+    TYPE_PROPERITES = [('','Select type'),
+                       ('real_estate','Real Estate agency'),
                        ('indivitual','Indivitual')]
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='seller_profile')
     type = models.CharField(max_length=50, blank=True, choices=TYPE_PROPERITES)
