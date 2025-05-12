@@ -10,6 +10,7 @@ from django.utils import timezone
 from datetime import timedelta
 from decimal import Decimal, InvalidOperation
 from django.contrib.auth.decorators import login_required
+from .forms import PropertyForm
 
 def property_view(request):
     properties = Property.objects.all()
@@ -123,3 +124,23 @@ def json_search(request):
     ]
 
     return JsonResponse({'data': data})
+
+@login_required
+def add_property(request):
+    property_form = PropertyForm()
+    return render(request, 'properties/add_property.html', {'property_form':property_form})
+    #if request.method == 'POST':
+
+    #     property_form = PropertyForm(request.POST or None, request.FILES or None)
+    #
+    #
+    #     if property_form.is_valid():
+    #         property_obj = property_form.save(commit=False)
+    #         property_obj.seller = request.user
+    #         property_form.save()
+    #         messages.success(request, 'You have successfully added a property.')
+    #         return redirect('home')
+    #
+    # return render(request, 'properties/add_property.html', {})
+    #
+    #
