@@ -194,3 +194,16 @@ main h1 {
 main p.subheading {
     margin-bottom: 1.5rem;
 }
+
+.alert {
+    white-space: pre-line;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+}
+
+.alert-success {
+    background: linear-gradient(90deg, #D09683 0%, #330000 100%);
+    color: white;
+    font-weight: bold;
+}

@@ -105,11 +105,17 @@
 <main role="main" class="container d-flex justify-content-center mt-5 pt-4">
 
   <div class="col-lg-8 col-md-10">
-        {%  if messages %}
-            {%  for message in messages %}
-                {{ message }}
-            {%  endfor %}
-        {% endif %}
+        {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {% if 'html' in message.tags %}
+                    {{ message|safe }}
+                {% else %}
+                    {{ message }}
+                {% endif %}
+            </div>
+      {% endfor %}
+      {% endif %}
   <br/>
 
     {% block content %}{% endblock %}

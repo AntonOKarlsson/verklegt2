@@ -1,9 +1,15 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Property
-from  properties.models import Property
 from django.http import JsonResponse
 from property_images.models import PropertyImage
-
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from properties.models import Property
+from offer.models import PurchaseOffer
+from django.utils import timezone
+from datetime import timedelta
+from decimal import Decimal, InvalidOperation
+from django.contrib.auth.decorators import login_required
 
 def property_view(request):
     properties = Property.objects.all()
@@ -15,19 +21,6 @@ def get_property_by_id(request, id):
     property_obj = get_object_or_404(Property, id=id)
     return render(request, 'properties/property_detail.html', {'property': property_obj})
 
-
-def offer_on_property_by_id(request, id):
-    property_obj = get_object_or_404(Property, id=id)
-    property_images = property_obj.images.all()  # Get the property images
-
-    # Add context for the template
-    context = {
-        'property': property_obj,
-        'property_images': property_images,
-    }
-
-    return render(request, 'offers/offer_form.html', context)
-
 def property_search_page(request):
     postal_codes = Property.objects.values_list('postal_code', flat=True).distinct().order_by('postal_code')
     property_types = Property.objects.values_list('property_type', flat=True).distinct().order_by('property_type')
@@ -36,6 +29,47 @@ def property_search_page(request):
         'property_types': property_types
     })
 
+
+@login_required
+def offer_on_property_by_id(request, id):
+    property_obj = get_object_or_404(Property, id=id)
+
+    if request.method == 'POST':
+        offer_price_str = request.POST.get('offer_price')
+
+        try:
+            offer_price = Decimal(offer_price_str)
+        except (TypeError, InvalidOperation):
+            messages.error(request, "Invalid offer price.")
+            return redirect('property-by-id', id=id)
+
+        offer = PurchaseOffer(
+            user=request.user,
+            property=property_obj,
+            offer_price=offer_price,
+            expires_at=timezone.now() + timedelta(days=14)
+        )
+
+        offer.save()
+        messages.success(
+            request,
+            f"""🎯 Your offer was submitted successfully!
+
+        🏠 Property: {property_obj.title}
+        💸 Your offer: ISK {offer_price:,.2f}
+        ⏳ Expires: {offer.expires_at.strftime('%B %d, %Y')}
+
+        You will be notified as soon as the seller responds!"""
+        )
+
+        return redirect('property-by-id', id=id)
+
+    property_images = property_obj.images.all()
+    context = {
+        'property': property_obj,
+        'property_images': property_images,
+    }
+    return render(request, 'offers/offer_form.html', context)
 
 def json_search(request):
     search_term = request.GET.get('property_search', "")
