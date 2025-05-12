@@ -18,6 +18,6 @@ class PropertyForm(forms.ModelForm):
             'num_rooms': forms.TextInput(attrs={'class': 'form-control','placeholder':'Number of rooms'}),
             'num_bedrooms': forms.TextInput(attrs={'class': 'form-control','placeholder':'Number of bedrooms'}),
             'num_bathrooms': forms.TextInput(attrs={'class': 'form-control','placeholder':'Number of bathrooms'}),
-            'size_sqm': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Size sqm'}),
+            'size_sqm': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Size (m²)'}),
             'built_year': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Built year'}),
         }
