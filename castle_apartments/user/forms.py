@@ -52,7 +52,7 @@ class UpdateUserForm(UserChangeForm):
     first_name = forms.CharField(label="First Name", max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'First Name'}))
     last_name = forms.CharField(label="Last Name", max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Last Name'}))
     is_seller = forms.BooleanField(required=False)
-    profile_image = forms.ImageField(label="Profile Image", required=False)
+    profile_image = forms.ImageField(label="Profile Image", required=False, widget=forms.FileInput(attrs={'class':'form-control'}))
 
 
     class Meta:

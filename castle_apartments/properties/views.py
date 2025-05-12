@@ -10,6 +10,7 @@ from django.utils import timezone
 from datetime import timedelta
 from decimal import Decimal, InvalidOperation
 from django.contrib.auth.decorators import login_required
+from .forms import PropertyForm
 
 def property_view(request):
     properties = Property.objects.all()
