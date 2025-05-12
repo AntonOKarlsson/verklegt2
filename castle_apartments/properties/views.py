@@ -71,6 +71,9 @@ def offer_on_property_by_id(request, id):
     }
     return render(request, 'offers/offer_form.html', context)
 
+from django.http import JsonResponse
+from .models import Property
+
 def json_search(request):
     search_term = request.GET.get('property_search', "")
     postal_code = request.GET.get('postal_code')
@@ -78,12 +81,15 @@ def json_search(request):
     max_price = request.GET.get('max_price')
     min_size = request.GET.get('min_size')
     max_size = request.GET.get('max_size')
+    min_rooms = request.GET.get("min_rooms")
+    max_rooms = request.GET.get("max_rooms")
     property_type = request.GET.get('property_type')
+    ordering = request.GET.get('ordering')
 
     results = Property.objects.all()
 
     if search_term:
-        results = results.filter(title__icontains=search_term)
+        results = results.filter(title__icontains=search_term) | results.filter(address__icontains=search_term)
 
     if postal_code:
         results = results.filter(postal_code__icontains=postal_code)
@@ -100,15 +106,22 @@ def json_search(request):
     if max_size:
         results = results.filter(size_sqm__lte=int(max_size))
 
+    if min_rooms:
+        results = results.filter(num_rooms__gte=int(min_rooms))
+
+    if max_rooms:
+        results = results.filter(num_rooms__lte=int(max_rooms))
+
     if property_type:
         results = results.filter(property_type__iexact=property_type)
 
-    ordering = request.GET.get('ordering')
     if ordering in ['price', '-price', 'title', '-title']:
         results = results.order_by(ordering)
 
-    data = [
-        {
+    data = []
+    for p in results:
+        thumbnail = p.images.filter(is_thumbnail=True).first()
+        data.append({
             'id': p.id,
             'title': p.title,
             'address': p.address,
@@ -116,10 +129,7 @@ def json_search(request):
             'size_sqm': float(p.size_sqm) if p.size_sqm is not None else None,
             'num_rooms': p.num_rooms,
             'is_sold': p.is_sold,
-            'thumbnail_url': p.images.filter(is_thumbnail=True).first().image.url
-            if p.images.filter(is_thumbnail=True).exists() else None,
-        }
-        for p in results
-    ]
+            'thumbnail_url': thumbnail.image.url if thumbnail else None,
+        })
 
     return JsonResponse({'data': data})
