@@ -1,8 +1,15 @@
 from django import forms
-from .models import Property
+from .models import Property, PostalCode
 
 
 class PropertyForm(forms.ModelForm):
+    postal_code = forms.ModelChoiceField(
+        queryset=PostalCode.objects.order_by("code"),
+        to_field_name="code",
+        empty_label="Select postal code",
+        widget=forms.Select(attrs={"class": "form-select"}),
+    )
+
     class Meta:
         model = Property
         fields = ('header_image', 'title', 'description', 'price', 'address', 'postal_code','property_type',
@@ -25,5 +32,5 @@ class PropertyForm(forms.ModelForm):
             'num_bedrooms': forms.TextInput(attrs={'class': 'form-control','placeholder':'Number of bedrooms'}),
             'num_bathrooms': forms.TextInput(attrs={'class': 'form-control','placeholder':'Number of bathrooms'}),
             'size_sqm': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Size (m²)'}),
-            'built_year': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Built year'}),
+            'built_year': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Year built'}),
         }

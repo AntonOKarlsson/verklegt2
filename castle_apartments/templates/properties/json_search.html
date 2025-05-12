@@ -21,7 +21,7 @@
                     <select id="postal-code" class="form-select">
                         <option value="">Any</option>
                         {% for code in postal_codes %}
-                            <option value="{{ code }}">{{ code }}</option>
+                            <option value="{{ code.code }}">{{ code.code }} — {{ code.city }} ({{ code.region }})</option>
                         {% endfor %}
                     </select>
                 </div>

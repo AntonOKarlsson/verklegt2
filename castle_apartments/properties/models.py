@@ -25,3 +25,19 @@ class Property(models.Model):
 
     def __str__(self):
         return self.title
+
+class PostalCode(models.Model):
+    code = models.CharField(max_length=10, unique=True)
+    city = models.CharField(max_length=100)
+    region = models.CharField(max_length=100)
+    label = models.CharField(max_length=100, blank=True, null=True)  # optional district
+
+    @property
+    def subgroup(self):
+        return self.city if self.city == "Reykjavík" else self.region
+
+    def __str__(self):
+        base = f"{self.code} {self.city}"
+        if self.label:
+            base += f" — {self.label}"
+        return base

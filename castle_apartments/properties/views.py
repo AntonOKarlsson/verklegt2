@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from property_images.models import PropertyImage
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from properties.models import Property
+from properties.models import Property, PostalCode
 from offer.models import PurchaseOffer
 from django.utils import timezone
 from datetime import timedelta
@@ -23,11 +23,18 @@ def get_property_by_id(request, id):
     return render(request, 'properties/property_detail.html', {'property': property_obj})
 
 def property_search_page(request):
-    postal_codes = Property.objects.values_list('postal_code', flat=True).distinct().order_by('postal_code')
-    property_types = Property.objects.values_list('property_type', flat=True).distinct().order_by('property_type')
+    postal_codes = PostalCode.objects.order_by("code")
+
+    property_types = Property.objects \
+        .exclude(property_type__isnull=True) \
+        .exclude(property_type__exact="") \
+        .values_list("property_type", flat=True) \
+        .distinct() \
+        .order_by("property_type")
+
     return render(request, 'properties/json_search.html', {
         'postal_codes': postal_codes,
-        'property_types': property_types
+        'property_types': property_types,
     })
 
 
