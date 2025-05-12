@@ -11,7 +11,6 @@ class PurchaseOffer(models.Model):
         ('expired', 'Expired'),
     ]
 
-    # Add null=True and blank=True to make this field optional
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='offers', null=True, blank=True)
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='offers')
     offer_price = models.DecimalField(max_digits=12, decimal_places=2)
