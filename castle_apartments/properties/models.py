@@ -12,6 +12,8 @@ class Property(models.Model):
     postal_code = models.CharField(max_length=10, blank=True)
     property_type = models.CharField(max_length=50, blank=True)
     num_rooms = models.IntegerField(null=True, blank=True)
+    num_bedrooms = models.IntegerField(null=True, blank=True)
+    num_bathrooms = models.IntegerField(null=True, blank=True)
     size_sqm = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     built_year = models.IntegerField(null=True, blank=True)
     is_sold = models.BooleanField(default=False)

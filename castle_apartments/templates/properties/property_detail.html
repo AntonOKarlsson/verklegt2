@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
 <head>
@@ -21,15 +22,17 @@
                 {% endif %}
 
                 <p><strong>Description:</strong> {{ property.description }}</p>
-                <p><strong>Price:</strong> {{ property.price }} kr</p>
+                <p><strong>Price:</strong> {{ property.price|floatformat:0|intcomma }} kr</p>
                 <p><strong>Address:</strong> {{ property.address }}</p>
                 <p><strong>Postal Code:</strong> {{ property.postal_code }}</p>
                 <p><strong>Property Type:</strong> {{ property.property_type }}</p>
                 <p><strong>Number of Rooms:</strong> {{ property.num_rooms }}</p>
-                <p><strong>Size (sqm):</strong> {{ property.size_sqm }}</p>
-                <p><strong>Built Year:</strong> {{ property.built_year }}</p>
+                <p><strong>Number of Bedrooms:</strong> {{ property.num_bedrooms }} </p>
+                <p><strong>Number of Bathrooms:</strong> {{property.num_bathrooms }}</p>
+                <p><strong>Size (sqm):</strong> {{ property.size_sqm|floatformat:0 }}</p>
+                <p><strong>Year Built:</strong> {{ property.built_year }}</p>
                 <p><strong>Sold:</strong> {% if property.is_sold %}Yes{% else %}No{% endif %}</p>
-                <p><strong>Created At:</strong> {{ property.created_at }}</p>
+                <p><strong>Listed On:</strong> {{ property.created_at|date:"j. F Y" }} </p>
 
                 <hr>
                 <h4>Gallery</h4>
