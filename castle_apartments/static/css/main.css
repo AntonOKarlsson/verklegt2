@@ -207,3 +207,13 @@ main p.subheading {
     color: white;
     font-weight: bold;
 }
+
+.credit-card {
+    width: 360px;
+    height: 400px;
+    margin: 60px auto 0;
+    border: 1px solid #330000;
+    border-radius: 6px;
+    background-color: #D09683;
+    box-shadow: 1px 2px 3px 0 rgba(0,0,0,.10);
+}
