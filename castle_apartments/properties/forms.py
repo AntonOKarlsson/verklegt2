@@ -8,7 +8,10 @@ class PropertyForm(forms.ModelForm):
         fields = ('header_image', 'title', 'description', 'price', 'address', 'postal_code','property_type',
                   'num_rooms','num_bedrooms','num_bathrooms','size_sqm','built_year')
         labels = {
-                    'size_sqm' : 'Size (m²)'
+                    'size_sqm' : 'Size (m²)',
+                    'num_rooms' : 'Number of rooms',
+                    'num_bedrooms' : 'Number of bedrooms',
+                    'num_bathrooms' : 'Number of bathrooms',
         }
         widgets = {
             'header_image': forms.TextInput(attrs={'class': 'form-control','placeholder':'Header image'}),
