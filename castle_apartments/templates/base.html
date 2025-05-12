@@ -64,6 +64,11 @@
                     <a class="nav-item nav-link" href="#">Open houses</a>
                     <a class="nav-item nav-link" href="#">Financing</a>
                     <a class="nav-item nav-link" href="#">Statistics</a>
+                    {%  if user.is_authenticated %}
+                        {%  if user.is_seller %}
+                            <a class="nav-item nav-link" href="{% url 'property-add' %}">Add property</a>
+                        {%  endif %}
+                    {%  endif %}
                 </div>
 
                 <!-- Right side nav -->
