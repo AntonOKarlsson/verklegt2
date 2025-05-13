@@ -79,9 +79,15 @@ def add_property2(request):
             prop = property_form2.save(commit=False)
             prop.seller = request.user.seller_profile
             prop.save()
+            first = True
 
             for file in files:
-                PropertyImage.objects.create(property=prop, file=file)
+                if first:
+                    PropertyImage.objects.create(property=prop, image=file, is_thumbnail=True)
+                    first = False
+                else:
+                    PropertyImage.objects.create(property=prop, image=file)
+
 
         return redirect('properties')
 
