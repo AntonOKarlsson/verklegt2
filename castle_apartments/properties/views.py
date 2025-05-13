@@ -151,19 +151,21 @@ def add_property(request):
         return redirect('home')
 
     if request.method == 'POST':
-        property_form = PropertyForm(request.POST, request.FILES)
-        files = request.FILES.getlist('files')
-        file_list = []
+        print('we are in post')
+        property_form = PropertyForm(request.POST) #, request.FILES)
+        #files = request.FILES.getlist('files')
+        #file_list = []
 
 
         if property_form.is_valid():
-            property_instance = property_form.save(commit=False)
-            property_instance.user = request.user
-            property_instance.postal_code = property_instance.postal_code[:3]
-            property_instance.save()
+            property_form.save()
+            print(property_form.errors)
+            #property_instance.seller  = Seller.objects.get(user=request.user)
+            property_form.postal_code = property_form.postal_code[:3]
+            property_form.save()
 
-            for file in files:
-                PropertyImage.objects.create(property=property_instance.id, file=file)
+            # for file in files:
+            #     PropertyImage.objects.create(property=property_form.id, file=file)
                 #new_file.save()
                 #file_list.append(new_file.image.name.url)
 
