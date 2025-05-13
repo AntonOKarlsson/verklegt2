@@ -28,6 +28,7 @@ urlpatterns = [
     path('properties/', include('properties.urls')),
     path('', home, name='home'),
     path('user/', include('user.urls')),
+    path('', include('stats.urls')),
 ]
 
 if settings.DEBUG:

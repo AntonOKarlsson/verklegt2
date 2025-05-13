@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<head>
+    <title>Property Purchase Statistics</title>
+</head>
+<body>
+    <h1>Index Over Time</h1>
+
+    {% if plot_base64 %}
+        <img src="data:image/png;base64,{{ plot_base64 }}" alt="Index Chart">
+    {% else %}
+        <p>No plot available.</p>
+    {% endif %}
+</body>
+{% endblock content %}
