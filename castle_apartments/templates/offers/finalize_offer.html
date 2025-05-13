@@ -1,122 +1,151 @@
 {% extends 'base.html' %}
 {% block content %}
 <body>
-<form method="post">
-    {% csrf_token %}
-    <div class="card mb-4 p-4">
-        <h1 class="mb-4">Finalizing Offer for {{ property.title }}</h1>
-        {% if property.header_image %}
-        <div class="mb-4">
-            <img src="{{ property.header_image.url }}" alt="{{ property.title }}" class="img-fluid rounded shadow-sm">
-        </div>
-        {% else %}
-        <p>No image available</p>
-        {% endif %}
-
-        <p><strong>Offer Price:</strong> ISK {{ offer.offer_price|floatformat:2 }}</p>
-        <p><strong>Listed Price:</strong> ISK {{ property.price|floatformat:2 }}</p>
-        <p><strong>Property:</strong> {{ property.title }}</p>
-        <p><strong>Status:</strong> {{ offer.get_status_display }}</p>
-
+<div class="card mb-4 p-4">
+    <h1 class="mb-4">Finalizing Offer for {{ property.title }}</h1>
+    {% if property.header_image %}
+    <div class="mb-4">
+        <img src="{{ property.header_image.url }}" alt="{{ property.title }}" class="img-fluid rounded shadow-sm">
     </div>
-    <div>
-        <p>How would you like to finance the payment for the property?</p>
-        <input type="radio" id="Credit card" name="payment" value="Credit card">
-        <label for="Credit card">Credit card</label><br>
-        <input type="radio" id="Bank transfer" name="payment" value="Bank transfer">
-        <label for="Bank transfer">Bank transfer</label><br>
-        <input type="radio" id="Mortgage" name="payment" value="Mortgage">
-        <label for="Mortgage">Mortgage</label>
+    {% else %}
+    <p>No image available</p>
+    {% endif %}
 
-        <!-- Form 1 https://designmodo.com/create-credit-card-ui/ -->
-        <div id="credit-card-form" class="form-container" style="display: none;">
-            <form class="credit-card">
-                <div class="form-header">
-                    <h4 class="title">Credit card detail</h4>
+    <p><strong>Offer Price:</strong> ISK {{ offer.offer_price|floatformat:2 }}</p>
+    <p><strong>Listed Price:</strong> ISK {{ property.price|floatformat:2 }}</p>
+    <p><strong>Property:</strong> {{ property.title }}</p>
+    <p><strong>Status:</strong> {{ offer.get_status_display }}</p>
+</div>
+
+<!-- Payment Method Selection -->
+<div>
+    <p>How would you like to finance the payment for the property?</p>
+    <input type="radio" id="Credit card" name="payment" value="Credit card">
+    <label for="Credit card">Credit card</label><br>
+    <input type="radio" id="Bank transfer" name="payment" value="Bank transfer">
+    <label for="Bank transfer">Bank transfer</label><br>
+    <input type="radio" id="Mortgage" name="payment" value="Mortgage">
+    <label for="Mortgage">Mortgage</label>
+</div>
+
+<!-- Credit Card Form -->
+<div id="credit-card-form" class="form-container" style="display: none;">
+    <form class="credit-card" method="POST" action="{% url 'user:creditcard_information' offer_id=offer.id %}">
+        {% csrf_token %}
+        <div class="form-header">
+            <h4 class="title">Credit card detail</h4>
+        </div>
+        <div class="form-body">
+            <!-- Hidden field for payment method -->
+            <input type="hidden" name="credit-card" value="Credit card">
+
+            <!-- Card Number -->
+            <input type="text" name="card-number" class="card-number" placeholder="Card Number" required>
+
+            <!-- Date Field -->
+            <div class="date-field">
+                <div class="month">
+                    <select name="Month" required>
+                        <option value="">Select Month</option>
+                        <option value="01">January</option>
+                        <option value="02">February</option>
+                        <option value="03">March</option>
+                        <option value="04">April</option>
+                        <option value="05">May</option>
+                        <option value="06">June</option>
+                        <option value="07">July</option>
+                        <option value="08">August</option>
+                        <option value="09">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
                 </div>
-
-                <div class="form-body">
-                    <!-- Card Number -->
-
-                    <input type="text" class="card-number" placeholder="Card Number">
-
-                    <!-- Date Field -->
-                    <div class="date-field">
-                        <div class="month">
-                            <select name="Month">
-                                <option value="january">January</option>
-                                <option value="february">February</option>
-                                <option value="march">March</option>
-                                <option value="april">April</option>
-                                <option value="may">May</option>
-                                <option value="june">June</option>
-                                <option value="july">July</option>
-                                <option value="august">August</option>
-                                <option value="september">September</option>
-                                <option value="october">October</option>
-                                <option value="november">November</option>
-                                <option value="december">December</option>
-                            </select>
-                        </div>
-                        <div class="year">
-                            <select name="Year">
-                                <option value="2025">2016</option>
-                                <option value="2026">2017</option>
-                                <option value="2027">2018</option>
-                                <option value="2028">2019</option>
-                                <option value="2029">2020</option>
-                                <option value="2030">2021</option>
-                                <option value="2031">2022</option>
-                                <option value="2032">2023</option>
-                                <option value="2033">2024</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Card Verification Field -->
-                    <div class="card-verification">
-                        <div class="cvv-input">
-                            <input type="text" placeholder="CVV">
-                        </div>
-                        <div class="cvv-details">
-                            <p>3 or 4 digits usually found <br> on the signature strip</p>
-                        </div>
-                    </div>
+                <div class="year">
+                    <select name="Year" required>
+                        <option value="">Select Year</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>
+                        <option value="2031">2031</option>
+                        <option value="2032">2032</option>
+                        <option value="2033">2033</option>
+                    </select>
                 </div>
-            </form>
+            </div>
+
+            <!-- Card Verification Field -->
+            <div class="card-verification">
+                <div class="cvv-input">
+                    <input type="text" name="cvv" placeholder="CVV" required>
+                </div>
+                <div class="cvv-details">
+                    <p>3 or 4 digits usually found <br> on the signature strip</p>
+                </div>
+            </div>
         </div>
 
-        <!-- Form 2 -->
-        <div id="bank-transfer-form" class="form-container" style="display: none;">
-            <h3>Bank transfer</h3>
+        <div class="form-footer">
+            <button type="submit" class="btn btn-primary">Submit Card Information</button>
+        </div>
+    </form>
+</div>
 
+<!-- Bank Transfer Form -->
+<div id="bank-transfer-form" class="form-container" style="display: none;">
+    <h3>Bank transfer</h3>
+    <br/>
+    <p>You can make your bank transfor to our account, number <strong>0152-22-482891</strong></p>
+    <a href="{% url 'user:confirm_offer' offer_id=offer.id %}" class="btn btn-primary">Review and confirm</a>
+
+</div>
+
+<!-- Mortgage Form -->
+<div id="mortgage-form" class="form-container" style="display: none;">
+    <form class="credit-card" method="POST" action="{% url 'user:mortgage_information' offer_id=offer.id %}">
+        {% csrf_token %}
+        <div class="form-header">
+            <h4 class="title">Mortgage detail</h4>
+        </div>
+        <div class="form-body">
+            <input type="hidden" name="mortgage" value="Mortgage">
+            <input type="text" name="card-number" class="mortgage-number"
+                   placeholder="Enter the mortgage number" style="width: 350px;">
+
+            <div class="bank-field">
+                <div class="bank">
+                    <select name="bank-name">
+                        <option value="Arion Banki">Arion Banki</option>
+                        <option value="Landsbankinn">Landsbankinn</option>
+                        <option value="Húsnæðis- og mannvirkjastofnun">Húsnæðis- og mannvirkjastofnun</option>
+                        <option value="Íslandsbanki">Íslandsbanki</option>
+                    </select>
+                </div>
+            </div>
+            <input type="text" name="approved-amount" class="approved_amount"
+                   placeholder="Enter the approved amount of the mortgage" style="width: 350px;">
         </div>
 
-        <!-- Form 3 -->
-        <div id="mortgage-form" class="form-container" style="display: none;">
-            <h3>Mortgage</h3>
-            <input type="text" class="mortgage-number" placeholder="Enter the mortgage number" style="width: 350px;">
-
+        <div class="form-footer">
+            <button type="submit" class="btn btn-primary">Submit Mortgage Information</button>
         </div>
+    </form>
 
-    </div>
-
-    <div>
-        <br/>
-        <a href="{% url 'user:confirm_offer' offer_id=offer.id %}" class="btn btn-primary">Review and confirm</a>
-    </div>
-</form>
-
+</div>
+<br/>
+<br/>
 <script>
     document.querySelectorAll('input[name="payment"]').forEach(radio => {
         radio.addEventListener('change', function() {
-            document.querySelectorAll('.payment').forEach(form => {
-                form.style.display = 'none';
-            });
+            // Hide all payment forms
             ['credit-card-form', 'bank-transfer-form', 'mortgage-form'].forEach(id => {
                 document.getElementById(id).style.display = 'none';
             });
 
+            // Show selected payment form
             if (this.value === 'Credit card') {
                 document.getElementById('credit-card-form').style.display = 'block';
             } else if (this.value === 'Bank transfer') {

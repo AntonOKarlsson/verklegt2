@@ -1,13 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
-<p>það sem vantar hérna er að prenta út allar upplýsingar um eignina (þar á meðal fjármögnunina) og tilboðið og fá samþykki kaupanda fyrir því.</p>
-    <p><strong>Offer Price:</strong> ISK {{ offer.offer_price|floatformat:2 }}</p>
+<p>Here is the overview of your offer, which has been accepted.</p>
+<p>If you agree with everything here, please confirm the offer. </p>
+    <p><strong>Your offer:</strong> ISK {{ offer.offer_price|floatformat:2 }}</p>
     <p><strong>Listed Price:</strong> ISK {{ property.price|floatformat:2 }}</p>
     <p><strong>Property:</strong> {{ property.title }}</p>
-    <p><strong>Status:</strong> {{ offer.get_status_display }}</p>
+    <p><strong>Type of property:</strong> {{ property.property_type }}</p>
+    <p><strong>Seller:</strong> {{ property.seller }}</p>
+    <p><strong>Address:</strong> {{ property.address }}</p>
+    <p><strong>Postal code:</strong> {{ property.postal_code }}</p>
+    <p><strong>Number of rooms:</strong> {{ property.num_rooms }}</p>
+    <p><strong>Number of bedrooms:</strong> {{ property.num_bedrooms }}</p>
+    <p><strong>Number of bathrooms:</strong> {{ property.num_bathrooms }}</p>
+    <p><strong>Property size:</strong> {{ property.size_sqm }}</p>
+    <p><strong>Built in year:</strong> {{ property.built_year }}</p>
+    <p><strong>Payment method:</strong> {{ offer.payment_method }}</p>
+    <p><strong>Date of offer:</strong> {{ offer.submitted_at }}</p>
+    <p><strong>Date of payment:</strong> {{ offer.payment_submitted_at }}</p>
+   <img src="{{ property.thumbnail_image.image.url }}" alt="{{ property.title }}" class="img-fluid rounded shadow-sm mt-2">
 
 <div>
         <br/>
-        <a href="{% url 'home' %}" class="btn btn-primary">Confirm the offer (this cannot be undone)</a>
+        <a href="{% url 'user:confirmation' offer_id=offer.id %}" class="btn btn-primary">Confirm the offer (this cannot be undone)</a>
     </div>
+<br/>
+<br/>
 {% endblock content %}
