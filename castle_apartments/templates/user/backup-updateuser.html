@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<body>
+        <br/>
+        <br/>
+        <table>
+            <tr>
+                <td style="width:70%">
+                    <form class="updateuser" method="post" enctype='multipart/form-data' action="{%  url 'user:updateuser' %}">
+                        {% csrf_token %}
+
+                        {{ user_form.as_p }}
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <button type="submit" style="margin-top:10px" class="btn btn-primary">
+                            Save updated info
+                        </button>
+
+                    </form>
+            </tr>
+        </table>
+    <br/>
+
+        <div style="margin-top:-120px;margin-left:0px">
+            {% if user.is_seller %}
+                <a href="{% url 'user:updatesellerinfo' %}" style="padding-bottom:5px" class="btn btn-info">Update info</a>
+            {% endif %}
+            <a href="{% url 'user:updatepassword' %}" class="btn btn-warning">Change Password</a>
+        </div>
+        <div style="margin-top:-400px;margin-left:600px;">
+            {%  if user.profile_image  %}
+                <img style='height:250px' src="{{user.profile_image.url}}">
+            {%  endif %}
+        </div>
+
+        <div>
+            <a href="{% url 'user:list_of_offers' %}" class="btn btn-primary" style="margin-top:300px">See all offers you have made</a>
+        </div>
+
+
+
+
+</body>
+{% endblock content %}
