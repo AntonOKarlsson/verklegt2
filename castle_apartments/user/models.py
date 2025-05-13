@@ -12,6 +12,12 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    def get_seller_id(self):
+        try:
+            return self.seller_profile.id
+        except Seller.DoesNotExist:
+            return None
+
 class Seller(models.Model):
     TYPE_PROPERITES = [('','Select type'),
                        ('real_estate','Real Estate agency'),

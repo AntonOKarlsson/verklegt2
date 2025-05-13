@@ -6,7 +6,6 @@
 <div class="container-fluid mt-2">
     <div class="row align-items-start">
 
-        <!-- Form Column -->
         <div class="col-lg-9 col-md-8">
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -15,7 +14,6 @@
             </form>
         </div>
 
-        <!-- Profile Image Column -->
         <div class="col-lg-3 col-md-4 text-center">
             {% if user.profile_image %}
                 <img src="{{ user.profile_image.url }}" alt="Profile Image"
@@ -31,32 +29,32 @@
     </div>
 </div>
 
-    <div class="container-fluid mt-4">
-        <div class="row align-items-start">
+<div class="container-fluid mt-4">
+    <div class="row align-items-start">
 
-            <!-- Profile Actions -->
-            <div class="col-md-6">
-                {% if user.is_seller %}
-                    <a href="{% url 'user:updatesellerinfo' %}" class="btn btn-info mb-2">Update Info</a>
+        <div class="col-md-6">
+            {% if user.is_seller %}
+                <a href="{% url 'user:updatesellerinfo' %}" class="btn btn-info mb-2">Update Info</a>
+                {% if user.is_seller and user.get_seller_id %}
+                    <a href="{% url 'user:seller-profile' user.get_seller_id %}" class="btn btn-success mb-2">
+                        View Seller Profile
+                    </a>
                 {% endif %}
-                <a href="{% url 'user:updatepassword' %}" class="btn btn-warning mb-2">Change Password</a>
-            </div>
 
-
+            {% endif %}
+            <a href="{% url 'user:updatepassword' %}" class="btn btn-warning mb-2">Change Password</a>
         </div>
 
-        <!-- Offer Link -->
-        <div class="row mt-5">
-            <div class="col">
-                <a href="{% url 'user:list_of_offers' %}" class="btn btn-primary">
-                    See All Offers You Have Made
-                </a>
-            </div>
-        </div>
     </div>
 
-
-
+    <div class="row mt-5">
+        <div class="col">
+            <a href="{% url 'user:list_of_offers' %}" class="btn btn-primary">
+                See All Offers You Have Made
+            </a>
+        </div>
+    </div>
+</div>
 
 </body>
 {% endblock content %}

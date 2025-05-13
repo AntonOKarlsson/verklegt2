@@ -65,7 +65,7 @@ class UpdateUserForm(UserChangeForm):
 
         self.fields['username'].widget.attrs['class'] = 'form-control'
         self.fields['username'].widget.attrs['placeholder'] = 'User Name'
-        self.fields['username'].label = 'User name'
+        self.fields['username'].label = 'Username'
         self.fields['username'].help_text = '<span class="form-text text-muted"><small>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small></span>'
 
 

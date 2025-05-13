@@ -2,13 +2,13 @@
 {% load humanize %}
 {% load thumbnail %}
 
-<!-- Grid for Property List -->
 <div class="row" id="propertyContainer">
     {% for p in properties %}
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
             <div class="card h-100 bg-body text-body {% if p.is_sold %}sold{% endif %}">
-                {% if p.thumbnail_image %}
-                    <img src="{% thumbnail p.thumbnail_image.image 300x300 crop %}" class="card-img-top" alt="Thumbnail of {{ p.title }}">
+
+                {% if p.prefetched_thumbnails %}
+                    <img src="{% thumbnail p.prefetched_thumbnails.0.image 300x300 crop %}" class="card-img-top" alt="Thumbnail of {{ p.title }}">
                 {% else %}
                     <img src="{% static 'images/property_placeholder.png' %}" class="card-img-top" alt="No thumbnail">
                 {% endif %}
@@ -29,6 +29,11 @@
                     <p class="card-text"><strong>Address:</strong> {{ p.address }}</p>
                     <p class="card-text"><strong>Rooms:</strong> {{ p.num_rooms }}</p>
                     <p class="card-text"><strong>Size:</strong> {{ p.size_sqm|floatformat:0 }} m²</p>
+
+                    {% if request.user == p.seller.user %}
+                        <a href="{% url 'edit_property' p.id %}" class="btn btn-outline-secondary btn-sm mt-2 w-100">
+                            Edit Property</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

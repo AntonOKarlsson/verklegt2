@@ -3,8 +3,8 @@ from decimal import Decimal, InvalidOperation
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
-from django.http import JsonResponse
+from django.db.models import Q, Prefetch
+from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
@@ -14,7 +14,11 @@ from offer.models import PurchaseOffer
 from property_images.models import PropertyImage
 
 def property_view(request):
-    properties = Property.objects.all()
+    thumbnail_qs = PropertyImage.objects.filter(is_thumbnail=True)
+
+    properties = Property.objects.all().prefetch_related(
+        Prefetch('images', queryset=thumbnail_qs, to_attr='prefetched_thumbnails')
+    ).select_related('seller__user')
 
     return render(request, 'properties/properties.html', {'properties': properties})
 
@@ -207,9 +211,50 @@ def search_properties(request):
     if order_by in ['title', '-title', 'price', '-price']:
         results = results.order_by(order_by)
 
+    # ✅ Prefetch thumbnails and seller.user
+    thumbnail_qs = PropertyImage.objects.filter(is_thumbnail=True)
+    results = results.prefetch_related(
+        Prefetch('images', queryset=thumbnail_qs, to_attr='prefetched_thumbnails')
+    ).select_related('seller__user')
 
     return render(request, 'properties/property_search.html', {
         'properties': results,
         'postal_codes': PostalCode.objects.all(),
         'property_types': Property.objects.values_list('property_type', flat=True).distinct(),
     })
+
+def edit_property(request, property_id):
+    property = get_object_or_404(Property, id=property_id)
+
+    if request.user != property.seller.user:
+        return HttpResponseForbidden("You don't have permission to edit this property.")
+
+    form = PropertyForm(request.POST or None, request.FILES or None, instance=property)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+
+        images = request.FILES.getlist('images')
+        for image in images:
+            PropertyImage.objects.create(property=property, image=image)
+
+        return redirect('user:seller-profile', property.seller.id)
+
+    return render(request, 'properties/edit_property.html', {
+        'form': form,
+        'property': property
+    })
+
+def set_thumbnail(request, image_id):
+    image = get_object_or_404(PropertyImage, id=image_id)
+    property = image.property
+
+    if property.seller.user != request.user:
+        return HttpResponseForbidden("You do not own this property.")
+
+    PropertyImage.objects.filter(property=property).update(is_thumbnail=False)
+
+    image.is_thumbnail = True
+    image.save()
+
+    return redirect('edit_property', property.id)

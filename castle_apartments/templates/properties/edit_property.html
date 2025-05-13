@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Edit Property: {{ property.title }}</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="mb-3">
+            <label for="images" class="form-label">Add More Images:</label>
+            <input type="file" name="images" multiple class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">Save Changes</button>
+        <a href="{% url 'user:seller-profile' property.seller.id %}" class="btn btn-secondary mt-2">Cancel</a>
+    </form>
+</div>
+
+{% if property.images.all %}
+<hr>
+<h4>Current Images</h4>
+<div class="row">
+    {% for img in property.images.all %}
+        <div class="col-6 col-md-3 mb-3">
+            <img src="{{ img.image.url }}" alt="Property Image" class="img-fluid rounded shadow-sm mb-2">
+            {% if img.is_thumbnail %}
+                <span class="badge bg-success mb-2">Thumbnail</span>
+            {% else %}
+                <form method="POST" action="{% url 'set_thumbnail' img.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-primary w-100">Set as Thumbnail</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

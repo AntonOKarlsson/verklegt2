@@ -1,20 +1,22 @@
+from datetime import timedelta
 
-from django.utils import timezone
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
-from django.contrib import messages
-from user import forms
-from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from user.forms import SignUpForm, UpdateUserForm, ChangePasswordForm, SellerForm
-from django.contrib.auth import get_user_model
-from .models import create_seller, Seller
-from properties.models import Property
-from django.views.generic import DetailView, ListView
-from django.http import JsonResponse
-from offer.models import PurchaseOffer,CreditCardInfo,MortgageInfo
+from django.contrib import messages
+from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.db.models import Prefetch
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
+from django.views.generic import DetailView, ListView
+
+from offer.models import CreditCardInfo, MortgageInfo, PurchaseOffer
+from properties.models import Property
+from property_images.models import PropertyImage
+from user.forms import ChangePasswordForm, SellerForm, SignUpForm, UpdateUserForm
+from user.models import Seller, create_seller
+
 
 User = get_user_model()
 
@@ -59,19 +61,23 @@ def create_user(request):
 
 def update_user(request):
     if request.user.is_authenticated:
-        current_user = User.objects.get(id=request.user.id)
-        user_form = UpdateUserForm(request.POST or None,request.FILES or None, instance=current_user)
+        current_user = request.user
+        user_form = UpdateUserForm(request.POST or None, request.FILES or None, instance=current_user)
+
+        seller_profile = getattr(current_user, 'seller_profile', None)
 
         if user_form.is_valid():
             user_form.save()
-
             login(request, current_user)
-            messages.success(request, ('You have successfully updated your account.'))
-            #return redirect('home')
-        return render(request, 'user/updateuser.html',{'user_form':user_form})
+            messages.success(request, 'You have successfully updated your account.')
+
+        return render(request, 'user/updateuser.html', {
+            'user_form': user_form,
+            'seller_profile': seller_profile
+        })
     else:
-        messages.success(request, 'You must be logged in to update your account.')
-        return render(request, 'user/updateuser.html',{})
+        messages.error(request, 'You must be logged in to update your account.')
+        return redirect('user:login')
 
 def update_password(request):
     if request.user.is_authenticated:
@@ -96,14 +102,18 @@ def update_password(request):
         messages.error(request, 'You must be logged in to update your account.')
 
 def seller_profile(request, seller_id):
-    seller = get_object_or_404(Seller, user__id=seller_id)
-    properties = Property.objects.filter(seller=seller).prefetch_related('images')
+    seller = get_object_or_404(Seller, id=seller_id)
+
+    thumbnail_qs = PropertyImage.objects.filter(is_thumbnail=True)
+
+    properties = Property.objects.filter(seller=seller).prefetch_related(
+        Prefetch('images', queryset=thumbnail_qs, to_attr='prefetched_thumbnails')
+    ).select_related('seller__user')
 
     return render(request, 'user/seller_profile.html', {
         'seller': seller,
         'properties': properties,
     })
-
 def update_sellerinfo(request):
     if request.user.is_authenticated:
         current_user = request.user
