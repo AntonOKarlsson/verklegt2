@@ -1,18 +1,12 @@
 from django import forms
 from .models import Property, PostalCode
-
+from property_images.models import PropertyImage
+from django.forms import modelformset_factory
 
 class PropertyForm(forms.ModelForm):
-    postal_code = forms.ModelChoiceField(
-        queryset=PostalCode.objects.order_by("code"),
-        to_field_name="code",
-        empty_label="Select postal code",
-        widget=forms.Select(attrs={"class": "form-select"}),
-    )
-
     class Meta:
         model = Property
-        fields = ('header_image', 'title', 'description', 'price', 'address', 'postal_code','property_type',
+        fields = ('title', 'description', 'price', 'address', 'postal_code','property_type',
                   'num_rooms','num_bedrooms','num_bathrooms','size_sqm','built_year')
         labels = {
                     'size_sqm' : 'Size (m²)',
@@ -21,12 +15,11 @@ class PropertyForm(forms.ModelForm):
                     'num_bathrooms' : 'Number of bathrooms',
         }
         widgets = {
-            'header_image': forms.TextInput(attrs={'class': 'form-control','placeholder':'Header image'}),
             'title': forms.TextInput(attrs={'class': 'form-control','placeholder':'Title'}),
             'description': forms.TextInput(attrs={'class': 'form-control','placeholder':'Description'}),
             'price': forms.TextInput(attrs={'class': 'form-control','placeholder':'Price'}),
             'address': forms.TextInput(attrs={'class': 'form-control','placeholder':'Address'}),
-            'postal_code': forms.TextInput(attrs={'class': 'form-control','placeholder':'Postal code'}),
+            'postal_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. 105'}),
             'property_type': forms.TextInput(attrs={'class': 'form-control','placeholder':'Property type'}),
             'num_rooms': forms.TextInput(attrs={'class': 'form-control','placeholder':'Number of rooms'}),
             'num_bedrooms': forms.TextInput(attrs={'class': 'form-control','placeholder':'Number of bedrooms'}),
@@ -34,3 +27,13 @@ class PropertyForm(forms.ModelForm):
             'size_sqm': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Size (m²)'}),
             'built_year': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Year built'}),
         }
+
+PropertyImageFormSet = modelformset_factory(
+    PropertyImage,
+    fields=('image', 'is_thumbnail'),
+    extra=3,
+    widgets={
+        'image': forms.ClearableFileInput(attrs={'class': 'form-control', 'multiple': False}),
+        'is_thumbnail': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+    }
+)

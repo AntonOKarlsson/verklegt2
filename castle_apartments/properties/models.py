@@ -30,7 +30,7 @@ class PostalCode(models.Model):
     code = models.CharField(max_length=10, unique=True)
     city = models.CharField(max_length=100)
     region = models.CharField(max_length=100)
-    label = models.CharField(max_length=100, blank=True, null=True)  # optional district
+    label = models.CharField(max_length=100, blank=True, null=True)
 
     @property
     def subgroup(self):
@@ -41,3 +41,4 @@ class PostalCode(models.Model):
         if self.label:
             base += f" — {self.label}"
         return base
+
