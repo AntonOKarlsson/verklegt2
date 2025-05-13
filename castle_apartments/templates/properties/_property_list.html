@@ -13,6 +13,12 @@
                     <img src="{% static 'images/property_placeholder.png' %}" class="card-img-top" alt="No thumbnail">
                 {% endif %}
 
+                {% if p.is_sold %}
+                    <div class="position-absolute top-0 start-0 bg-danger text-white px-2 py-1 fw-bold" style="font-size: 0.9rem;">
+                        SOLD
+                    </div>
+                {% endif %}
+
                 <div class="card-body">
                     <h5 class="card-title">
                         <a href="{% url 'property-by-id' p.id %}" class="text-decoration-none text-primary">
