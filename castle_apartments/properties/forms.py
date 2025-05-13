@@ -27,7 +27,7 @@ class PropertyForm(forms.ModelForm):
             'price': forms.TextInput(attrs={'class': 'form-control','placeholder':'Price'}),
             'address': forms.TextInput(attrs={'class': 'form-control','placeholder':'Address'}),
             'postal_code': forms.TextInput(attrs={'class': 'form-control','placeholder':'Postal code'}),
-            'property_type': forms.TextInput(attrs={'class': 'form-control','placeholder':'Property type'}),
+            'property_type': forms.Select(attrs={'class': 'form-control','placeholder':'Property type'}),
             'num_rooms': forms.TextInput(attrs={'class': 'form-control','placeholder':'Number of rooms'}),
             'num_bedrooms': forms.TextInput(attrs={'class': 'form-control','placeholder':'Number of bedrooms'}),
             'num_bathrooms': forms.TextInput(attrs={'class': 'form-control','placeholder':'Number of bathrooms'}),

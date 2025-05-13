@@ -1,3 +1,5 @@
+from urllib.request import Request
+
 from django.shortcuts import render, get_object_or_404
 from .models import Property
 from django.http import JsonResponse
@@ -150,9 +152,21 @@ def add_property(request):
 
     if request.method == 'POST':
         property_form = PropertyForm(request.POST, request.FILES)
+        files = request.FILES.getlist('files')
+        file_list = []
+
 
         if property_form.is_valid():
-            property_form.save()
+            property_instance = property_form.save(commit=False)
+            property_instance.user = request.user
+            property_instance.postal_code = property_instance.postal_code[:3]
+            property_instance.save()
+
+            for file in files:
+                PropertyImage.objects.create(property=property_instance.id, file=file)
+                #new_file.save()
+                #file_list.append(new_file.image.name.url)
+
             messages.success(request, 'Property added successfully.')
             return redirect('home')
 

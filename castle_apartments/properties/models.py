@@ -3,14 +3,22 @@
 from django.db import models
 
 class Property(models.Model):
+
+    TYPE_PROPERITES = [('','Any'),
+                       ('appartment','Apartment'),
+                       ('block','Block'),
+                        ('house', 'House'),
+                       ('castle','Castle'),
+                       ('townhouse','Townhouse')]
+
     seller = models.ForeignKey('user.Seller', on_delete=models.CASCADE, related_name='properties')
     header_image = models.ImageField(upload_to='media/property_images/', blank=True, null=True)
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=12, decimal_places=2)
     address = models.TextField()
-    postal_code = models.CharField(max_length=10, blank=True)
-    property_type = models.CharField(max_length=50, blank=True)
+    postal_code = models.CharField(max_length=50, blank=True)
+    property_type = models.CharField(max_length=50, blank=True, choices=TYPE_PROPERITES)
     num_rooms = models.IntegerField(null=True, blank=True)
     num_bedrooms = models.IntegerField(null=True, blank=True)
     num_bathrooms = models.IntegerField(null=True, blank=True)
