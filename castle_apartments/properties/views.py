@@ -90,6 +90,8 @@ def search_properties(request):
     postal_code = request.GET.get('postal_code')
     price_range = request.GET.get('price_range')
     property_type = request.GET.get('property_type')
+    size_range = request.GET.get('size_range')
+    room_range = request.GET.get('room_range')
     order_by = request.GET.get('order_by')
 
     has_filters = any([
@@ -126,8 +128,43 @@ def search_properties(request):
     if property_type:
         results = results.filter(property_type__iexact=property_type)
 
+    if size_range:
+        if '+' in size_range:
+            try:
+                min_size = int(size_range.replace('+', ''))
+                results = results.filter(size_sqm__gte=min_size)
+            except ValueError:
+                pass
+        else:
+            try:
+                min_size, max_size = map(int, size_range.split('-'))
+                results = results.filter(size_sqm__gte=min_size, size_sqm__lte=max_size)
+            except ValueError:
+                pass
+
+    if room_range:
+        if '+' in room_range:
+            try:
+                min_rooms = int(room_range.replace('+', ''))
+                results = results.filter(num_rooms__gte=min_rooms)
+            except ValueError:
+                pass
+        elif '-' in room_range:
+            try:
+                min_rooms, max_rooms = map(int, room_range.split('-'))
+                results = results.filter(num_rooms__gte=min_rooms, num_rooms__lte=max_rooms)
+            except ValueError:
+                pass
+        else:
+            try:
+                exact_rooms = int(room_range)
+                results = results.filter(num_rooms=exact_rooms)
+            except ValueError:
+                pass
+
     if order_by in ['title', '-title', 'price', '-price']:
         results = results.order_by(order_by)
+
 
     return render(request, 'properties/property_search.html', {
         'properties': results,
