@@ -67,6 +67,39 @@ def offer_on_property_by_id(request, id):
 from django.http import JsonResponse
 from .models import Property
 
+@login_required
+def add_property2(request):
+    if request.method == 'POST':
+        property_form2 = PropertyForm(request.POST, request.FILES)
+
+        files = request.FILES.getlist('files')
+        file_list = []
+
+        if property_form2.is_valid():
+            prop = property_form2.save(commit=False)
+            prop.seller = request.user.seller_profile
+            prop.save()
+            first = True
+
+            for file in files:
+                if first:
+                    PropertyImage.objects.create(property=prop, image=file, is_thumbnail=True)
+                    first = False
+                else:
+                    PropertyImage.objects.create(property=prop, image=file)
+
+
+        return redirect('properties')
+
+    else:
+        property_form2 = PropertyForm()
+
+
+    return render(request, 'properties/add_property.html', {
+        'property_form': property_form2,
+    })
+
+
 
 @login_required
 def add_property(request):
