@@ -1,16 +1,17 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Property
-from django.http import JsonResponse
-from property_images.models import PropertyImage
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
-from properties.models import Property, PostalCode
-from offer.models import PurchaseOffer
-from django.utils import timezone
 from datetime import timedelta
 from decimal import Decimal, InvalidOperation
+
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
+
 from .forms import PropertyForm
+from .models import Property, PostalCode
+from offer.models import PurchaseOffer
+from property_images.models import PropertyImage
 
 def property_view(request):
     properties = Property.objects.all()
@@ -21,22 +22,6 @@ def property_view(request):
 def get_property_by_id(request, id):
     property_obj = get_object_or_404(Property, id=id)
     return render(request, 'properties/property_detail.html', {'property': property_obj})
-
-def property_search_page(request):
-    postal_codes = PostalCode.objects.order_by("code")
-
-    property_types = Property.objects \
-        .exclude(property_type__isnull=True) \
-        .exclude(property_type__exact="") \
-        .values_list("property_type", flat=True) \
-        .distinct() \
-        .order_by("property_type")
-
-    return render(request, 'properties/json_search.html', {
-        'postal_codes': postal_codes,
-        'property_types': property_types,
-    })
-
 
 @login_required
 def offer_on_property_by_id(request, id):
@@ -82,65 +67,7 @@ def offer_on_property_by_id(request, id):
 from django.http import JsonResponse
 from .models import Property
 
-def json_search(request):
-    search_term = request.GET.get('property_search', "")
-    postal_code = request.GET.get('postal_code')
-    min_price = request.GET.get('min_price')
-    max_price = request.GET.get('max_price')
-    min_size = request.GET.get('min_size')
-    max_size = request.GET.get('max_size')
-    min_rooms = request.GET.get("min_rooms")
-    max_rooms = request.GET.get("max_rooms")
-    property_type = request.GET.get('property_type')
-    ordering = request.GET.get('ordering')
 
-    results = Property.objects.all()
-
-    if search_term:
-        results = results.filter(title__icontains=search_term) | results.filter(address__icontains=search_term)
-
-    if postal_code:
-        results = results.filter(postal_code__icontains=postal_code)
-
-    if min_price:
-        results = results.filter(price__gte=int(min_price))
-
-    if max_price:
-        results = results.filter(price__lte=int(max_price))
-
-    if min_size:
-        results = results.filter(size_sqm__gte=int(min_size))
-
-    if max_size:
-        results = results.filter(size_sqm__lte=int(max_size))
-
-    if min_rooms:
-        results = results.filter(num_rooms__gte=int(min_rooms))
-
-    if max_rooms:
-        results = results.filter(num_rooms__lte=int(max_rooms))
-
-    if property_type:
-        results = results.filter(property_type__iexact=property_type)
-
-    if ordering in ['price', '-price', 'title', '-title']:
-        results = results.order_by(ordering)
-
-    data = []
-    for p in results:
-        thumbnail = p.images.filter(is_thumbnail=True).first()
-        data.append({
-            'id': p.id,
-            'title': p.title,
-            'address': p.address,
-            'price': float(p.price),
-            'size_sqm': float(p.size_sqm) if p.size_sqm is not None else None,
-            'num_rooms': p.num_rooms,
-            'is_sold': p.is_sold,
-            'thumbnail_url': thumbnail.image.url if thumbnail else None,
-        })
-
-    return JsonResponse({'data': data})
 @login_required
 def add_property(request):
     property_form=PropertyForm()
@@ -158,3 +85,52 @@ def add_property(request):
 
     return render(request, 'properties/add_property.html', {'property_form':property_form})
 
+def search_properties(request):
+    search_term = request.GET.get('search_term', '').strip()
+    postal_code = request.GET.get('postal_code')
+    price_range = request.GET.get('price_range')
+    property_type = request.GET.get('property_type')
+    order_by = request.GET.get('order_by')
+
+    has_filters = any([
+        search_term, postal_code, price_range, property_type, order_by
+    ])
+
+    if request.GET:
+        results = Property.objects.all()
+    else:
+        results = Property.objects.none()
+
+    if search_term:
+        results = results.filter(
+            Q(title__icontains=search_term) | Q(address__icontains=search_term)
+        )
+
+    if postal_code:
+        results = results.filter(postal_code=postal_code)
+
+    if price_range:
+        if '+' in price_range:
+            try:
+                min_price = int(price_range.replace('+', ''))
+                results = results.filter(price__gte=min_price)
+            except ValueError:
+                pass
+        else:
+            try:
+                min_price, max_price = map(int, price_range.split('-'))
+                results = results.filter(price__gte=min_price, price__lte=max_price)
+            except ValueError:
+                pass
+
+    if property_type:
+        results = results.filter(property_type__iexact=property_type)
+
+    if order_by in ['title', '-title', 'price', '-price']:
+        results = results.order_by(order_by)
+
+    return render(request, 'properties/property_search.html', {
+        'properties': results,
+        'postal_codes': PostalCode.objects.all(),
+        'property_types': Property.objects.values_list('property_type', flat=True).distinct(),
+    })
