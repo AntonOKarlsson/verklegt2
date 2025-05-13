@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
-from .forms import PropertyForm
+from .forms import PropertyForm, PropertyImageFormSet
 from .models import Property, PostalCode
 from offer.models import PurchaseOffer
 from property_images.models import PropertyImage
@@ -70,20 +70,33 @@ from .models import Property
 
 @login_required
 def add_property(request):
-    property_form=PropertyForm()
-    if not request.user.is_seller:
-        messages.error(request, "You must be a seller to add a property.")
-        return redirect('home')
-
     if request.method == 'POST':
         property_form = PropertyForm(request.POST, request.FILES)
+        image_formset = PropertyImageFormSet(request.POST, request.FILES, queryset=PropertyImage.objects.none())
 
-        if property_form.is_valid():
-            property_form.save()
-            messages.success(request, 'Property added successfully.')
-            return redirect('home')
+        if property_form.is_valid() and image_formset.is_valid():
+            prop = property_form.save(commit=False)
+            prop.seller = request.user.seller_profile
+            prop.save()
 
-    return render(request, 'properties/add_property.html', {'property_form':property_form})
+            for form in image_formset.cleaned_data:
+                if form and form.get('image'):
+                    PropertyImage.objects.create(
+                        property=prop,
+                        image=form['image'],
+                        is_thumbnail=form.get('is_thumbnail', False)
+                    )
+
+            return redirect('properties')
+
+    else:
+        property_form = PropertyForm()
+        image_formset = PropertyImageFormSet(queryset=PropertyImage.objects.none())
+
+    return render(request, 'properties/add_property.html', {
+        'property_form': property_form,
+        'image_formset': image_formset
+    })
 
 def search_properties(request):
     search_term = request.GET.get('search_term', '').strip()

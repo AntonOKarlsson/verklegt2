@@ -1,19 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
-<body>
+
         <H1>Add property to sell</H1>
         <br/>
         <br/>
-    <form method="post" enctype="multipart/form-data" action="">
-        {% csrf_token %}
-        {{ property_form.as_p }}
-        <br/>
-        <br/>
-        <button type="submit" class="btn btn-primary">
-            Add property
-        </button>
 
-    </form>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ property_form.as_p }}
 
-</body>
+    <h4>Upload additional images</h4>
+    {{ image_formset.management_form }}
+    {% for form in image_formset %}
+        <div class="mb-3">
+            {{ form.image.label_tag }} {{ form.image }}
+            {{ form.is_thumbnail.label_tag }} {{ form.is_thumbnail }}
+        </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">Add property</button>
+</form>
+
 {% endblock content %}
