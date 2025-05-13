@@ -1,35 +1,51 @@
 {% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+
 {% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="card p-4 mb-5">
+                {% if seller.cover_image_url %}
+                    <img src="{{ seller.cover_image_url }}" alt="Cover Image" class="img-fluid rounded mb-4 shadow-sm"
+                         style="max-height: 300px; object-fit: cover; width: 100%;">
+                {% endif %}
 
-<h2>
-    {{ seller.user.get_full_name|default:seller.user.username }}
-</h2>
 
-{% if seller.user.profile_image %}
-    <img src="{{ seller.user.profile_image.url }}" alt="Seller" class="rounded" width="120">
-{% endif %}
+                <div class="d-flex align-items-center mb-3">
+                    {% if seller.type == 'real_estate' and seller.logo_url %}
+                        <img src="{{ seller.logo_url }}" alt="Agency Logo" class="rounded me-3" width="100" height="100">
+                    {% elif seller.user.profile_image %}
+                        <img src="{{ seller.user.profile_image.url }}" alt="Profile Photo" class="rounded-circle me-3" width="100" height="100">
+                    {% else %}
+                        <img src="{% static 'images/default_profile.png' %}" alt="No Image" class="rounded-circle me-3" width="100" height="100">
+                    {% endif %}
+                    <h2 class="mb-0">
+                        {{ seller.user.get_full_name|default:seller.user.username }}
+                    </h2>
+                </div>
 
-{% if seller.seller_type %}
-    <p><strong>Type:</strong> {{ seller.seller_type }}</p>
-{% endif %}
+                <p><strong>Type:</strong>
+                    {% if seller.type == 'real_estate' %}Real Estate Agency
+                    {% else %}Individual
+                    {% endif %}
+                </p>
 
-{% if seller.seller_type == "Real Estate Agency" %}
-    <p><strong>Address:</strong>
-        {{ seller.address|default:"N/A" }},
-        {{ seller.city|default:"" }},
-        {{ seller.postal_code|default:"" }}
-    </p>
-{% endif %}
+                {% if seller.type == 'real_estate' %}
+                    <p><strong>Address:</strong> {{ seller.agency_address|default:"N/A" }}</p>
+                {% endif %}
 
-{% if seller.bio %}
-    <p>{{ seller.bio }}</p>
-{% elif seller.user.bio %}
-    <p>{{ seller.user.bio }}</p>
-{% endif %}
+                {% if seller.bio %}
+                    <p><strong>Bio:</strong> {{ seller.bio }}</p>
+                {% endif %}
+            </div>
 
-<hr>
-<h4>All properties by {{ seller.user.get_full_name|default:seller.user.username }}</h4>
-
-{% include 'properties/_property_list.html' with properties=properties %}
-
+            <div class="card p-4">
+                <h4 class="mb-4">Properties by {{ seller.user.get_full_name|default:seller.user.username }}</h4>
+                {% include 'properties/_property_list.html' with properties=properties %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
