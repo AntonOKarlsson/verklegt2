@@ -94,12 +94,8 @@ def search_properties(request):
     room_range = request.GET.get('room_range')
     order_by = request.GET.get('order_by')
 
-    has_filters = any([
-        search_term, postal_code, price_range, property_type, order_by
-    ])
-
     if request.GET:
-        results = Property.objects.all()
+        results = Property.objects.filter(is_sold=False)
     else:
         results = Property.objects.none()
 
