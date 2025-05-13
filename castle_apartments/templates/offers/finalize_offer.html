@@ -1,38 +1,131 @@
 {% extends 'base.html' %}
 {% block content %}
 <body>
+<form method="post">
+    {% csrf_token %}
+    <div class="card mb-4 p-4">
+        <h1 class="mb-4">Finalizing Offer for {{ property.title }}</h1>
+        {% if property.header_image %}
+        <div class="mb-4">
+            <img src="{{ property.header_image.url }}" alt="{{ property.title }}" class="img-fluid rounded shadow-sm">
+        </div>
+        {% else %}
+        <p>No image available</p>
+        {% endif %}
 
-<div class="card mb-4 p-4">
-    <h1 class="mb-4">Finalizing Offer for {{ property.title }}</h1>
-    {% if property.header_image %}
-    <div class="mb-4">
-        <img src="{{ property.header_image.url }}" alt="{{ property.title }}" class="img-fluid rounded shadow-sm">
+        <p><strong>Offer Price:</strong> ISK {{ offer.offer_price|floatformat:2 }}</p>
+        <p><strong>Listed Price:</strong> ISK {{ property.price|floatformat:2 }}</p>
+        <p><strong>Property:</strong> {{ property.title }}</p>
+        <p><strong>Status:</strong> {{ offer.get_status_display }}</p>
+
     </div>
-    {% else %}
-    <p>No image available</p>
-    {% endif %}
+    <div>
+        <p>How would you like to finance the payment for the property?</p>
+        <input type="radio" id="Credit card" name="payment" value="Credit card">
+        <label for="Credit card">Credit card</label><br>
+        <input type="radio" id="Bank transfer" name="payment" value="Bank transfer">
+        <label for="Bank transfer">Bank transfer</label><br>
+        <input type="radio" id="Mortgage" name="payment" value="Mortgage">
+        <label for="Mortgage">Mortgage</label>
 
-    <p><strong>Offer Price:</strong> ISK{{ offer.offer_price|floatformat:2 }}</p>
-    <p><strong>Listed Price:</strong> ISK{{ property.price|floatformat:2 }}</p>
-    <p><strong>Property:</strong> {{ property.title }}</p>
-    <p><strong>Status:</strong> {{ offer.get_status_display }}</p>
+        <!-- Form 1 https://designmodo.com/create-credit-card-ui/ -->
+        <div id="credit-card-form" class="form-container" style="display: none;">
+            <form class="credit-card">
+                <div class="form-header">
+                    <h4 class="title">Credit card detail</h4>
+                </div>
 
-</div>
-<div>
-    <p>How would you like to finance the payment for the property?</p>
-    <input type="radio" id="Credit card" name="payment" value="Credit card">
-    <label for="Credit card">Credit card</label><br>
-    <input type="radio" id="Bank transfer" name="payment" value="Bank transfer">
-    <label for="Bank transfer">Bank transfer</label><br>
-    <input type="radio" id="Mortgage" name="payment" value="Mortgage">
-    <label for="Mortgage">Mortgage</label>
+                <div class="form-body">
+                    <!-- Card Number -->
 
-</div>
+                    <input type="text" class="card-number" placeholder="Card Number">
 
-<div>
-    <br/>
-    <a href="{% url 'user:confirm_offer' offer_id=offer.id %}" class="btn btn-primary">Review and confirm</a>
-</div>
+                    <!-- Date Field -->
+                    <div class="date-field">
+                        <div class="month">
+                            <select name="Month">
+                                <option value="january">January</option>
+                                <option value="february">February</option>
+                                <option value="march">March</option>
+                                <option value="april">April</option>
+                                <option value="may">May</option>
+                                <option value="june">June</option>
+                                <option value="july">July</option>
+                                <option value="august">August</option>
+                                <option value="september">September</option>
+                                <option value="october">October</option>
+                                <option value="november">November</option>
+                                <option value="december">December</option>
+                            </select>
+                        </div>
+                        <div class="year">
+                            <select name="Year">
+                                <option value="2025">2016</option>
+                                <option value="2026">2017</option>
+                                <option value="2027">2018</option>
+                                <option value="2028">2019</option>
+                                <option value="2029">2020</option>
+                                <option value="2030">2021</option>
+                                <option value="2031">2022</option>
+                                <option value="2032">2023</option>
+                                <option value="2033">2024</option>
+                            </select>
+                        </div>
+                    </div>
 
+                    <!-- Card Verification Field -->
+                    <div class="card-verification">
+                        <div class="cvv-input">
+                            <input type="text" placeholder="CVV">
+                        </div>
+                        <div class="cvv-details">
+                            <p>3 or 4 digits usually found <br> on the signature strip</p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Form 2 -->
+        <div id="bank-transfer-form" class="form-container" style="display: none;">
+            <h3>Bank transfer</h3>
+
+        </div>
+
+        <!-- Form 3 -->
+        <div id="mortgage-form" class="form-container" style="display: none;">
+            <h3>Mortgage</h3>
+            <input type="text" class="mortgage-number" placeholder="Enter the mortgage number" style="width: 350px;">
+
+        </div>
+
+    </div>
+
+    <div>
+        <br/>
+        <a href="{% url 'user:confirm_offer' offer_id=offer.id %}" class="btn btn-primary">Review and confirm</a>
+    </div>
+</form>
+
+<script>
+    document.querySelectorAll('input[name="payment"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            document.querySelectorAll('.payment').forEach(form => {
+                form.style.display = 'none';
+            });
+            ['credit-card-form', 'bank-transfer-form', 'mortgage-form'].forEach(id => {
+                document.getElementById(id).style.display = 'none';
+            });
+
+            if (this.value === 'Credit card') {
+                document.getElementById('credit-card-form').style.display = 'block';
+            } else if (this.value === 'Bank transfer') {
+                document.getElementById('bank-transfer-form').style.display = 'block';
+            } else if (this.value === 'Mortgage') {
+                document.getElementById('mortgage-form').style.display = 'block';
+            }
+        });
+    });
+</script>
 </body>
 {% endblock content %}
