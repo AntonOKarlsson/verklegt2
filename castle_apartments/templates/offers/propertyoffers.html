@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>My property offers</h1>
+        <table>
+    {% if offers %}
+            {% for offer in offers %}
+        <tr>
+            <td>{{ offer.id }} </td>
+            <td>{{ offer.property.id }} </td>
+            <td>{{ offer.property.address }} </td>
+            <td>{{ offer.offer_price }} </td>
+            <td>{{ offer.status }} </td>
+        </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No offers available.</p>
+    {% endif %}
+{% endblock content %}

@@ -299,3 +299,8 @@ def mortgage_information(request, offer_id):
 def confirmation(request, offer_id):
     offer = get_object_or_404(PurchaseOffer, id=offer_id)
     return render(request, 'offers/confirmation.html', {'offer': offer})
+
+def propertyoffers(request):
+    current_user = request.user
+    offers_for_seller_1 = PurchaseOffer.objects.filter(property__seller=current_user.id)
+    return render(request, 'offers/propertyoffers.html', {'offers': offers_for_seller_1})
