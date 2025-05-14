@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import home, about_view, contact_view
+from .views import home, about_view, contact_view, financing_view
 from properties.views import property_view
 import user.views
 from django.conf.urls.static import static
@@ -28,6 +28,7 @@ urlpatterns = [
     path('properties/', include('properties.urls')),
     path('', home, name='home'),
     path('about/', about_view, name='about'),
+    path('financing/', financing_view, name='financing'),
     path('contact/',contact_view, name='contact'),
     path('user/', include('user.urls')),
     path('', include('stats.urls')),

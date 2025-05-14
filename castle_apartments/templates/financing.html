@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<body>
+<h1 class="text-center">Financing</h1>
+<div class="container my-5">
+    <div class="row">
+        <!-- Left column: Property info -->
+        <div class="col-lg-8">
+
+                <p>You have questions about financing your property purchase?</p>
+                <p>Don't worry, friend, because you have come to the right place!</p>
+
+
+                <p>At Castle Apartments we are always looking out for you, the customer! And that is why we offer the three most exciting and sensible ways of
+                    financing your purchase:</p>
+
+                <ul>
+                    <li><strong>Bank Mortgage:</strong> Bank mortgages from all the major Icelandic banks can be used to purchase properties at Castle Apartments. You only have
+                        to know the number of the mortgage, the amount and the bank. We will take care of the rest.</li>
+                    <li><strong>Credit Cards:</strong> We accept all major credit cards. You can safely insert your credit card information during the purchase step and the property
+                        is yours!</li>
+                    <li><strong>Bank transfer:</strong> If you want to purchase your property using a bank transfer, no problem! You can find our payment
+                        information when you go through the purchase process on the website. Remember to add the property number as an explanation! </li>
+                </ul>
+
+        </div>
+
+        <!-- Right column: Seller info and offer link -->
+        <div class="col-lg-4">
+                <div class="d-flex align-items-center">
+                   <img src="{% static 'images/financing.jpg' %}" style="height: auto; object-fit: cover;" class="img-thumbnail rounded">
+                </div>
+        </div>
+    </div>
+</div>
+</body>
+{% endblock content %}

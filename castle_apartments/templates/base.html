@@ -62,7 +62,7 @@
                     <a class="nav-item nav-link" href="{% url 'search-properties' %}">Search</a>
                     <a class="nav-item nav-link" href="{% url 'properties' %}">Property list</a>
                     <a class="nav-item nav-link" href="#">Open houses</a>
-                    <a class="nav-item nav-link" href="#">Financing</a>
+                    <a class="nav-item nav-link" href="{% url 'financing' %}">Financing</a>
                     <a class="nav-item nav-link" href="{% url 'stats_home' %}">Statistics</a>
                     {%  if user.is_authenticated %}
                         {%  if user.is_seller %}
