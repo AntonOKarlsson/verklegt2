@@ -17,13 +17,15 @@
             <div class="card mb-4 p-4">
                 <h1 class="mb-4">{{ property.title }}</h1>
 
-                {% if property.header_image %}
-                    <div class="mb-4">
-                        <img src="{{ property.header_image.url }}" alt="{{ property.title }}" class="img-fluid rounded shadow-sm">
-                    </div>
-                {% else %}
-                    <p>No image available</p>
-                {% endif %}
+                {% for image in property.images.all %}
+                    {% if image.is_thumbnail %}
+                        <div class="mb-4">
+                            <img src="{{ image.image.url }}" alt="{{ property.title }}" class="img-fluid rounded shadow-sm">
+                        </div>
+                    {% else %}
+                        <p>No thumbnail image available</p>
+                    {% endif %}
+                {% endfor %}
 
                 <p><strong>Description:</strong> {{ property.description }}</p>
                 <p><strong>Price:</strong> {{ property.price|floatformat:0|intcomma }} kr</p>
