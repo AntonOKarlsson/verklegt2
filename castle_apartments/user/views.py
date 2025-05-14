@@ -177,9 +177,14 @@ def confirm_offer(request, offer_id):
 @login_required
 def payment_information(request, offer_id):
     offer_obj = get_object_or_404(PurchaseOffer, id=offer_id)
-
     if request.method == 'POST':
         payment_method = request.POST.get('payment')
+        street = request.POST.get('street')
+        city = request.POST.get('city')
+        postal_code = request.POST.get('postal_code')
+        country = request.POST.get('country')
+        kennitala = request.POST.get('kennitala')
+
 
         if payment_method == 'Credit card':
             payment_method = 'Credit Card'
@@ -190,6 +195,11 @@ def payment_information(request, offer_id):
 
         offer_obj.payment_method = payment_method
         offer_obj.payment_submitted_at = timezone.now()
+        offer_obj.street = street
+        offer_obj.city = city
+        offer_obj.postal_code = postal_code
+        offer_obj.country = country
+        offer_obj.kennitala = kennitala
         offer_obj.save()
 
         if payment_method == 'Bank Transfer':
