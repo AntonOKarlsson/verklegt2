@@ -181,7 +181,6 @@ def payment_information(request, offer_id):
     if request.method == 'POST':
         payment_method = request.POST.get('payment')
 
-        # Normalize payment method names
         if payment_method == 'Credit card':
             payment_method = 'Credit Card'
         elif payment_method == 'Bank transfer':
@@ -189,17 +188,16 @@ def payment_information(request, offer_id):
         elif payment_method == 'Mortgage':
             payment_method = 'Mortgage'
 
-        # Update the offer with payment method
         offer_obj.payment_method = payment_method
         offer_obj.payment_submitted_at = timezone.now()
-        offer_obj.save()  # This line saves the payment method to the offer
+        offer_obj.save()
 
-        # Redirect based on payment method
-        if payment_method == 'Credit Card':
+        if payment_method == 'Bank Transfer':
+            return redirect('user:confirm_offer', offer_id=offer_obj.id)
+        elif payment_method == 'Credit Card':
             return redirect('user:creditcard_information', offer_id=offer_obj.id)
         elif payment_method == 'Mortgage':
             return redirect('user:mortgage_information', offer_id=offer_obj.id)
-        # Add other payment methods as needed
 
     context = {
         'offer': offer_obj,
@@ -211,19 +209,19 @@ def creditcard_information(request, offer_id):
     offer_obj = get_object_or_404(PurchaseOffer, id=offer_id)
 
     if request.method == 'POST':
-        if not offer_obj.payment_method:
-            offer_obj.payment_method = 'Credit Card'
-            offer_obj.payment_submitted_at = timezone.now()
-            offer_obj.save()
+        offer_obj.payment_method = 'Credit Card'
+        offer_obj.payment_submitted_at = timezone.now()
+        offer_obj.save()
 
-        # Save credit card details
+        if hasattr(offer_obj, 'mortgage_info'):
+            offer_obj.mortgage_info.delete()
+
         card_number = request.POST.get('card-number')
-        card_token = 'testtesttest'
+        card_token = 'testtesttest' #in a real scenario, this would be the card token from Stripe or similar payment gateway
         last_four_digits = card_number[-4:] if card_number else ''
         expiry_year = int(request.POST.get('Year'))
         expiry_month = int(request.POST.get('Month'))
 
-        # Create or update credit card info
         credit_card_info, created = CreditCardInfo.objects.get_or_create(
             offer=offer_obj,
             defaults={
@@ -241,7 +239,6 @@ def creditcard_information(request, offer_id):
             credit_card_info.expiry_month = expiry_month
             credit_card_info.save()
 
-        # Redirect to confirmation
         return redirect('user:confirm_offer', offer_id=offer_obj.id)
 
     context = {
@@ -254,25 +251,23 @@ def mortgage_information(request, offer_id):
     offer_obj = get_object_or_404(PurchaseOffer, id=offer_id)
 
     if request.method == 'POST':
-        # Set payment method on offer if not already set
-        if not offer_obj.payment_method:
-            offer_obj.payment_method = 'Mortgage'
-            offer_obj.payment_submitted_at = timezone.now()
-            offer_obj.save()
+        offer_obj.payment_method = 'Mortgage'
+        offer_obj.payment_submitted_at = timezone.now()
+        offer_obj.save()
 
-        # Save mortgage details
-        mortgage_number = request.POST.get('card-number')
+        if hasattr(offer_obj, 'creditcard_info'):
+            offer_obj.creditcard_info.delete()
+
+        mortgage_number = request.POST.get('mortgage-number')
         bank_name = request.POST.get('bank-name')
         approved_amount = request.POST.get('approved-amount')
 
-        # Convert approved_amount to appropriate format
         if approved_amount:
             try:
                 approved_amount = float(approved_amount)
             except ValueError:
                 approved_amount = None
 
-        # Create or update mortgage info
         mortinfo, created = MortgageInfo.objects.get_or_create(
             offer=offer_obj,
             defaults={
@@ -288,7 +283,6 @@ def mortgage_information(request, offer_id):
             mortinfo.approved_amount = approved_amount
             mortinfo.save()
 
-        # Redirect to confirmation (instead of confirm_offer)
         return redirect('user:confirm_offer', offer_id=offer_obj.id)
 
     context = {
