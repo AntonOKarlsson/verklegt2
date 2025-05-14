@@ -20,10 +20,13 @@ class PurchaseOffer(models.Model):
     submitted_at = models.DateTimeField(auto_now_add=True)
     expires_at = models.DateTimeField(null=True, blank=True)
 
-    # Add payment method to PurchaseOffer
-    payment_method = models.CharField(max_length=50, null=True,
-                                      blank=True)  # 'Credit Card', 'Mortgage', 'Bank Transfer'
+    payment_method = models.CharField(max_length=50, null=True, blank=True)
     payment_submitted_at = models.DateTimeField(null=True, blank=True)
+    street = models.CharField(null=True, blank=True)
+    city = models.CharField(null=True, blank=True)
+    postal_code = models.DecimalField(max_digits=10, decimal_places=0, null=True, blank=True)
+    country = models.CharField(null=True, blank=True)
+    kennitala = models.CharField(max_length=10, null=True, blank=True)
 
     def __str__(self):
         user_display = self.user.username if self.user else "Anonymous"
