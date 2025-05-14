@@ -18,22 +18,27 @@
 </div>
 
 <!-- Payment Method Selection -->
-<div>
-    <p>How would you like to finance the payment for the property?</p>
-    <input type="radio" id="Credit card" name="payment" value="Credit card">
-    <label for="Credit card">Credit card</label><br>
-    <input type="radio" id="Bank transfer" name="payment" value="Bank transfer">
-    <label for="Bank transfer">Bank transfer</label><br>
-    <input type="radio" id="Mortgage" name="payment" value="Mortgage">
-    <label for="Mortgage">Mortgage</label>
-</div>
+<form method="POST" action="{% url 'user:payment_information' offer_id=offer.id %}" id="payment-form">
+    {% csrf_token %}
+    <div>
+        <p>How would you like to finance the payment for the property?</p>
+        <input type="radio" id="Credit-card" name="payment" value="Credit card">
+        <label for="Credit-card">Credit card</label><br>
+        <input type="radio" id="Bank-transfer" name="payment" value="Bank transfer">
+        <label for="Bank-transfer">Bank transfer</label><br>
+        <input type="radio" id="Mortgage" name="payment" value="Mortgage">
+        <label for="Mortgage">Mortgage</label><br><br>
+
+        <button type="button" id="show-form-btn" class="btn btn-primary">Continue</button>
+    </div>
+</form>
 
 <!-- Credit Card Form -->
 <div id="credit-card-form" class="form-container" style="display: none;">
     <form class="credit-card" method="POST" action="{% url 'user:creditcard_information' offer_id=offer.id %}">
         {% csrf_token %}
         <div class="form-header">
-            <h4 class="title">Credit card detail</h4>
+            <h4 class="title">Credit Card Detail</h4>
         </div>
         <div class="form-body">
             <!-- Hidden field for payment method -->
@@ -99,7 +104,11 @@
     <h3>Bank transfer</h3>
     <br/>
     <p>You can make your bank transfor to our account, number <strong>0152-22-482891</strong></p>
-    <a href="{% url 'user:confirm_offer' offer_id=offer.id %}" class="btn btn-primary">Review and confirm</a>
+    <form method="POST" action="{% url 'user:payment_information' offer_id=offer.id %}">
+        {% csrf_token %}
+        <input type="hidden" name="payment" value="Bank transfer">
+        <button type="submit" class="btn btn-primary">Review and confirm</button>
+    </form>
 
 </div>
 
@@ -112,12 +121,13 @@
         </div>
         <div class="form-body">
             <input type="hidden" name="mortgage" value="Mortgage">
-            <input type="text" name="card-number" class="mortgage-number"
-                   placeholder="Enter the mortgage number" style="width: 350px;">
+            <input type="text" name="mortgage-number" class="mortgage-number"
+                   placeholder="Mortgage number">
 
             <div class="bank-field">
                 <div class="bank">
                     <select name="bank-name">
+                        <option value="" disabled selected>Choose your bank</option>
                         <option value="Arion Banki">Arion Banki</option>
                         <option value="Landsbankinn">Landsbankinn</option>
                         <option value="Húsnæðis- og mannvirkjastofnun">Húsnæðis- og mannvirkjastofnun</option>
@@ -126,7 +136,7 @@
                 </div>
             </div>
             <input type="text" name="approved-amount" class="approved_amount"
-                   placeholder="Enter the approved amount of the mortgage" style="width: 350px;">
+                   placeholder="Amount of the mortgage">
         </div>
 
         <div class="form-footer">
@@ -138,22 +148,25 @@
 <br/>
 <br/>
 <script>
-    document.querySelectorAll('input[name="payment"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            // Hide all payment forms
-            ['credit-card-form', 'bank-transfer-form', 'mortgage-form'].forEach(id => {
-                document.getElementById(id).style.display = 'none';
-            });
+    document.getElementById('show-form-btn').addEventListener('click', function() {
+        const selectedPayment = document.querySelector('input[name="payment"]:checked');
 
-            // Show selected payment form
-            if (this.value === 'Credit card') {
-                document.getElementById('credit-card-form').style.display = 'block';
-            } else if (this.value === 'Bank transfer') {
-                document.getElementById('bank-transfer-form').style.display = 'block';
-            } else if (this.value === 'Mortgage') {
-                document.getElementById('mortgage-form').style.display = 'block';
-            }
+        if (!selectedPayment) {
+            alert('Please select a payment method');
+            return;
+        }
+
+        ['credit-card-form', 'bank-transfer-form', 'mortgage-form'].forEach(id => {
+            document.getElementById(id).style.display = 'none';
         });
+
+        if (selectedPayment.value === 'Credit card') {
+            document.getElementById('credit-card-form').style.display = 'block';
+        } else if (selectedPayment.value === 'Bank transfer') {
+            document.getElementById('bank-transfer-form').style.display = 'block';
+        } else if (selectedPayment.value === 'Mortgage') {
+            document.getElementById('mortgage-form').style.display = 'block';
+        }
     });
 </script>
 </body>

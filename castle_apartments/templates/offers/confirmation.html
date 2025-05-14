@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <p>You have confirmed your offer!</p>
 <p>Now our lawyers and accountants will draw up all the necessary paperwork.</p>
 <p>We will be in touch with you soon.</p>
+<br/>
+<p>You will now be re-directed to the frontpage of the website.</p>
 
-<div>
-    <br/>
-	<a href="{% url 'home' %}" class="btn btn-primary">Return home</a>
-</div>
+<script type="text/javascript">
+    setTimeout(function() {
+        window.history.go(-(window.history.length - 1));
+        window.history.replaceState(null, null, '{% url "home" %}');
+    }, 5000); //
+</script>
+
 {% endblock content %}
