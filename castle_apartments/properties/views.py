@@ -27,7 +27,7 @@ def get_property_by_id(request, id):
     property_obj = get_object_or_404(Property, id=id)
     return render(request, 'properties/property_detail.html', {'property': property_obj})
 
-@login_required
+@login_required(login_url='user:login')
 def offer_on_property_by_id(request, id):
     property_obj = get_object_or_404(Property, id=id)
 
