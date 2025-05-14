@@ -54,7 +54,7 @@
 
         <!-- Right column: Seller info and offer link -->
         <div class="col-lg-4">
-            <div class="card mb-4 p-3">
+            <div class="card mb-4 p-3" style="width: 250px; flex-shrink: 0;">
                 <h5>Seller Information</h5>
                 <div class="d-flex align-items-center">
                     {% if property.seller.user.profile_image %}
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="card mb-4 p-3">
+            <div class="card mb-4 p-3" style="width: 250px; flex-shrink: 0;">
                 {% if property.is_sold %}
                     <div class="alert alert-secondary">This property has been sold.</div>
                 {% else %}
