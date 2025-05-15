@@ -302,5 +302,19 @@ def confirmation(request, offer_id):
 
 def propertyoffers(request):
     current_user = request.user
-    offers_for_seller_1 = PurchaseOffer.objects.filter(property__seller=current_user.id)
-    return render(request, 'offers/propertyoffers.html', {'offers': offers_for_seller_1})
+    offers_for_seller = PurchaseOffer.objects.filter(property__seller=current_user.id)
+    return render(request, 'offers/propertyoffers.html', {'offers': offers_for_seller})
+
+@login_required
+def update_offer_status(request, offer_id):
+    if request.method == "POST":
+        offer = get_object_or_404(PurchaseOffer, id=offer_id)
+
+        if offer.property.seller != request.user:
+            return messages.error(request,'You are not allowed to update this offer.')
+
+        new_status = request.POST.get('status')
+        if new_status in ['Accepted', 'Rejected', 'Pending']:
+            offer.status = new_status
+            offer.save()
+    return render('home/update_offer_status.html', {'offer': offer})

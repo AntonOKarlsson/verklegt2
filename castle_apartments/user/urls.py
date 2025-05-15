@@ -19,6 +19,9 @@ urlpatterns = [
     path('offers/creditcard/<int:offer_id>/', views.creditcard_information, name='creditcard_information'),
     path('offers/mortgage/<int:offer_id>/', views.mortgage_information, name='mortgage_information'),
     path('offers/confirmation/<int:offer_id>/', views.confirmation, name='confirmation'),
-
     path('propertyoffers/', views.propertyoffers, name='seller-offers'),
+
+
+
+
 ]

@@ -1,15 +1,33 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load humanize %}
     <h1>My property offers</h1>
-        <table>
+        <table class="table">
+        <tr>
+            <th>Offer number</th>
+            <th>Property number</th>
+            <th>Address</th>
+            <th>Price Offered</th>
+            <th>Status</th>
+        </tr>
     {% if offers %}
             {% for offer in offers %}
         <tr>
             <td>{{ offer.id }} </td>
             <td>{{ offer.property.id }} </td>
             <td>{{ offer.property.address }} </td>
-            <td>{{ offer.offer_price }} </td>
-            <td>{{ offer.status }} </td>
+            <td>{{ offer.offer_price|floatformat:0|intcomma }} kr.</td>
+            <td>
+                <form action="{% url 'update_offer_status' offer.id %}">
+                    {% csrf_token %}
+                    <select name="status">
+                        <option value="pending" {% if offer.status == "pending" %}selected{% endif %}>Pending</option>
+                        <option value="accepted" {% if offer.status == "accepted" %}selected{% endif %}>Accepted</option>
+                        <option value="rejected" {% if offer.status == "rejected" %}selected{% endif %}>Rejected</option>
+                    </select>
+                    <button type="submit" class="btn btn-secondary">Update</button>
+                </form>
+            </td>
         </tr>
             {% endfor %}
         </table>

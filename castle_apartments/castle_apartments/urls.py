@@ -31,8 +31,9 @@ urlpatterns = [
     path('financing/', financing_view, name='financing'),
     path('contact/',contact_view, name='contact'),
     path('user/', include('user.urls')),
-    #path('offers', include('offer.urls')),
     path('', include('stats.urls')),
+    path('offers/', include('offer.urls'))
+
 ]
 
 if settings.DEBUG:
