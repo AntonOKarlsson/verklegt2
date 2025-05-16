@@ -24,7 +24,7 @@ breyta eign sem er á sölu<br>
 Hægt að uploada mörgum myndum í einu og veja hvað er thumbnail og birtist þá í leit sem aðalmynd<br>
 Ef söluaðili er skráður inn getur hann séð allar eignir sem hann hefur skráð og breytt þeim<br>
 
-undir profile<br>
+<b>undir profile</b><br>
 Getur skipt um lykilorð<br>
 Geturðu skipt um mynd og breytt upplýsingunum, ef þú villt skrá á sölu hakarðu í "is seller"<br>
 ef þú ert seller þá færðu eftirfarandi auka takka undir profile<br>
