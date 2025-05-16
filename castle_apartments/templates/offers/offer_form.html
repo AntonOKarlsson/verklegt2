@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 {% block content %}
 
 <div class="container my-5">
@@ -27,7 +28,7 @@
             <div class="card mb-4 p-3">
                 <h5>Property Summary</h5>
                 <p><strong>Address:</strong> {{ property.address }}</p>
-                <p><strong>Asking Price:</strong> {{ property.price }} kr</p>
+                <p><strong>Asking Price:</strong> {{ property.price|intcomma }} kr</p>
                 <p><strong>Size:</strong> {{ property.size_sqm|floatformat:0 }} m²</p>
                 <p><strong>Rooms:</strong> {{ property.num_rooms }}</p>
 

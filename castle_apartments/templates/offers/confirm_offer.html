@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% load humanize %}
 {% block content %}
 <p>Here is the overview of your offer, which has been accepted.</p>
 <p>If you agree with everything here, please confirm the offer. </p>
-    <p><strong>Your offer:</strong> ISK {{ offer.offer_price|floatformat:2 }}</p>
-    <p><strong>Listed Price:</strong> ISK {{ property.price|floatformat:2 }}</p>
+    <p><strong>Your offer:</strong> ISK {{ offer.offer_price|floatformat:2|intcomma }}</p>
+    <p><strong>Listed Price:</strong> ISK {{ property.price|floatformat:2|intcomma }}</p>
     <p><strong>Property:</strong> {{ property.title }}</p>
     <p><strong>Type of property:</strong> {{ property.property_type }}</p>
     <p><strong>Seller:</strong> {{ property.seller }}</p>
