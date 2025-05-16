@@ -21,7 +21,7 @@ Brynjar Víðisson (brynjarv24@ru.is) <br>
 Skrá upplýsingar um seljanda<br>
 Skrá eign til sölu<br>
 breyta eign sem er á sölu<br>
-Hægt að uploada mörgum myndum í einu og veja hvað er thumbnail og birtist þá í leit sem aðalmynd<br>
+Hægt að uploada mörgum myndum í einu og velja hvað er thumbnail og birtist þá í leit sem aðalmynd<br>
 Ef söluaðili er skráður inn getur hann séð allar eignir sem hann hefur skráð og breytt þeim<br>
 
 <b>undir profile</b><br>
