@@ -16,7 +16,7 @@ Arnþór Sigurðsson  (arnthorsig24@ru.is) <br>
 Brynjar Víðisson (brynjarv24@ru.is) <br>
 
 
-# við bættum við eftirfarandi aukakröfu 
+# við bættum við eftirfarandi aukakröfur
 <b>Sem seljandi geturðu: </b><br>
 Skrá upplýsingar um seljanda<br>
 Skrá eign til sölu<br>
