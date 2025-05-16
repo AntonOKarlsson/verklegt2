@@ -27,6 +27,7 @@ Ef söluaðili er skráður inn getur hann séð allar eignir sem hann hefur skr
 <b>undir profile</b><br>
 Getur skipt um lykilorð<br>
 Geturðu skipt um mynd og breytt upplýsingunum, ef þú villt skrá á sölu hakarðu í "is seller"<br>
+Getur séð hvaða tilboð þú hefur gert í eignir <br
 ef þú ert seller þá færðu eftirfarandi auka takka undir profile<br>
 update info = þarna eru upplýsingar sem þarf fyrir söluaðila að hafa<br>
 view seller profile = þarna sérðu seller profile-inn sinn sem aðrir geta séð en að auki sérðu þær eignir sem þú ert skráður fyrir og getur breytt þeim<br>
