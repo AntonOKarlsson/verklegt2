@@ -265,7 +265,9 @@
                         <option value="ZW">Zimbabwe</option>
                     </select>
                 </div>
-    <input type="text" name="kennitala" class="kennitala" placeholder="National ID (kennitala)" required>
+    <label>
+        <input type="text" name="kennitala" pattern="^\d+$" minlength="9" maxlength="10"  class="kennitala" placeholder="National ID (kennitala)" required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+    </label>
 
     <div>
         <br/>
@@ -295,7 +297,9 @@
             <input type="hidden" name="credit-card" value="Credit card">
 
             <!-- Card Number -->
-            <input type="text" name="card-number" class="card-number" placeholder="Card Number" required>
+            <label>
+                <input type="text" pattern="^\d+$" minlength="16" maxlength="16" name="card-number" class="card-number" placeholder="Card Number" required oninput="this.value=this.value.replace(/[^0-9]/g, '')">
+            </label>
 
             <!-- Date Field -->
             <div class="date-field">
@@ -335,7 +339,7 @@
             <!-- Card Verification Field -->
             <div class="card-verification">
                 <div class="cvv-input">
-                    <input type="text" name="cvv" placeholder="CVV" required>
+                    <input type="text" pattern="^\d+$" minlength="3" maxlength="3"  name="cvv" placeholder="CVV" required oninput="this.value=this.value.replace(/[^0-9]/g, '')">
                 </div>
                 <div class="cvv-details">
                     <p>3 or 4 digits usually found <br> on the signature strip</p>
