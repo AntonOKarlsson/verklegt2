@@ -11,7 +11,7 @@ See Requirments.txt for python packages
 #Video instructions 
 link ?  <br>
 
-#Authors
+#Authors <br>
 Anton Örn Karlsson (antonok24@ru.is) <br>
 Arnþór Sigurðsson  (arnthorsig24@ru.is) <br>
 Brynjar Víðisson (brynjarv24@ru.is) <br>
