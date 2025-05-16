@@ -9,8 +9,7 @@
 
 <script type="text/javascript">
     setTimeout(function() {
-        window.history.go(-(window.history.length - 1));
-        window.history.replaceState(null, null, '{% url "home" %}');
+        window.location.href = '{% url "home" %}';
     }, 5000); //
 </script>
 
