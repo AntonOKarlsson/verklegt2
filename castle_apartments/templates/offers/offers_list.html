@@ -19,7 +19,7 @@
                 {% for offer in offers %}
                 <tr>
                     <td>{{ offer.property }}</td>
-                    <td>ISK{{ offer.offer_price|floatformat:2|intcomma }}</td>
+                    <td>ISK{{ offer.offer_price|floatformat:0|intcomma }} kr.</td>
                    <td>
                        {% if offer.get_status_display == "Accepted" %}
                        <a href="{% url 'user:finalize_offer' offer_id=offer.id %}">{{ offer.get_status_display }}</a>

@@ -52,8 +52,8 @@
     <p>No image available</p>
     {% endif %}
 
-    <p><strong>Offer Price:</strong> ISK {{ offer.offer_price|floatformat:2|intcomma }}</p>
-    <p><strong>Listed Price:</strong> ISK {{ property.price|floatformat:2|intcomma }}</p>
+    <p><strong>Offer Price:</strong> ISK {{ offer.offer_price|floatformat:0|intcomma }} kr.</p>
+    <p><strong>Listed Price:</strong> ISK {{ property.price|floatformat:0|intcomma }} kr.</p>
     <p><strong>Property:</strong> {{ property.title }}</p>
     <p><strong>Status:</strong> {{ offer.get_status_display }}</p>
 </div>
